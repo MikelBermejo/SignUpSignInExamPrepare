@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:controller="view.SignUpVController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: FFFFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField fx:id="textFieldUsername" layoutX="670.0" layoutY="43.0" prefHeight="50.0" prefWidth="300.0" promptText="Username" style="-fx-background-color: FFFFFF;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="textFieldEmail" layoutX="670.0" layoutY="139.0" prefHeight="50.0" prefWidth="300.0" promptText="Email" style="-fx-background-color: FFFFFF;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="textFieldName" layoutX="670.0" layoutY="235.0" prefHeight="50.0" prefWidth="300.0" promptText="Name" style="-fx-background-color: FFFFFF;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordField" layoutX="670.0" layoutY="331.0" prefHeight="50.0" prefWidth="300.0" promptText="Password" style="-fx-background-color: FFFFFF;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="passwordFieldConfirm" layoutX="670.0" layoutY="427.0" prefHeight="50.0" prefWidth="300.0" promptText="Confirm Password" style="-fx-background-color: FFFFFF;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </PasswordField>
+      <Pane prefHeight="600.0" prefWidth="505.0">
+         <children>
+            <ImageView fitHeight="600.0" fitWidth="505.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@SignUpFoto.png" />
+               </image>
+               <effect>
+                  <ColorAdjust brightness="-0.5" saturation="0.25" />
+               </effect>
+            </ImageView>
+            <Label layoutX="125.0" layoutY="100.0" text="Sign Up" textFill="WHITE">
+               <font>
+                  <Font name="Rockwell" size="70.0" />
+               </font>
+            </Label>
+            <Label layoutX="121.0" layoutY="492.0" text="Do you have already an account?" textFill="WHITE">
+               <font>
+                  <Font name="Rockwell" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="buttonSignIn" layoutX="193.0" layoutY="514.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: transparent;" text="Sign in" textFill="#68ff1c">
+               <font>
+                  <Font name="Rockwell" size="18.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="170.0" fitWidth="170.0" layoutX="165.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-cauliflower-100.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Button fx:id="buttonSignIn" layoutX="700.0" layoutY="515.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #64FF1A; -fx-background-radius: 50px;" text="Sign Up" textFill="WHITE">
+         <font>
+            <Font name="Rockwell" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow color="#9e9e9e" />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Line fx:id="lineUsername" endX="150.0" layoutX="820.0" layoutY="93.0" startX="-191.0" stroke="#686868" />
+      <Line fx:id="lineEmail" endX="150.0" layoutX="820.0" layoutY="189.0" startX="-191.0" stroke="#686868" />
+      <Line fx:id="lineName" endX="150.0" layoutX="820.0" layoutY="285.0" startX="-191.0" stroke="#686868" />
+      <Line fx:id="linePassword" endX="150.0" layoutX="820.0" layoutY="380.0" startX="-191.0" stroke="#686868" />
+      <Line fx:id="lineConfirmPassword" endX="150.0" layoutX="820.0" layoutY="477.0" startX="-191.0" stroke="#686868" />
+      <ImageView fx:id="imageViewUsername" fitHeight="40.0" fitWidth="40.0" layoutX="630.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons8-user-48%20(2).png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imageViewEmail" fitHeight="40.0" fitWidth="40.0" layoutX="630.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons8-circled-envelope-48%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imageViewName" fitHeight="40.0" fitWidth="40.0" layoutX="630.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons8-id-48.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imageViewPassword" fitHeight="40.0" fitWidth="40.0" layoutX="630.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons8-password-48.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imageViewConfirmPassword" fitHeight="40.0" fitWidth="40.0" layoutX="630.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons8-password-48.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="buttonShowHide1" layoutX="920.0" layoutY="341.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0" style="-fx-background-color: transparent;" textFill="#686868">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-eye-48%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="buttonShowHide2" layoutX="920.0" layoutY="438.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0" style="-fx-background-color: transparent;" textFill="#686868">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-eye-48%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</Pane>
