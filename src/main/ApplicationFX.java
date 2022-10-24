@@ -8,8 +8,8 @@ package main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import view.SignInViewVController;
 
 /**
  *
@@ -19,12 +19,14 @@ public class ApplicationFX extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/SignInView.fxml"));
+        Parent root = (Parent) loader.load();
         
-        Scene scene = new Scene(root);
+        SignInViewVController controller = ((SignInViewVController) loader.getController());
         
-        stage.setScene(scene);
-        stage.show();
+        controller.setStage(stage);
+        
+        controller.initStage(root);
     }
 
     /**
