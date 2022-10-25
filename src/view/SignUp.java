@@ -19,9 +19,8 @@ public class SignUp extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         // Carga el documento xml y obtiene un objeto Parent
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("view/SignUp.fxml"));
-        Parent root = (Parent)loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignUp.fxml"));
+        Parent root = (Parent) loader.load();
         
         SignUpVController controller = 
                 ((SignUpVController)loader.getController());
