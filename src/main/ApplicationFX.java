@@ -9,7 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import view.SignInViewVController;
+import view.SignInVController;
 
 /**
  *
@@ -19,10 +19,10 @@ public class ApplicationFX extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/SignInView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
         Parent root = (Parent) loader.load();
         
-        SignInViewVController controller = ((SignInViewVController) loader.getController());
+        SignInVController controller = ((SignInVController) loader.getController());
         
         controller.setStage(stage);
         
