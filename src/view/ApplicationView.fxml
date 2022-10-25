@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@app/SignUpSignInStyle.css" fx:controller="view.ApplicationVController">
+   <children>
+      <ImageView fx:id="imgFondo" fitHeight="600.0" fitWidth="1100.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Pictures/food.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="467.0" layoutX="364.0" layoutY="67.0" opacity="0.9" stroke="WHITE" strokeType="INSIDE" style="-fx-arc-height: 60; -fx-arc-width: 60;" width="372.0" />
+      <Label fx:id="labelMessage" alignment="CENTER" layoutX="376.0" layoutY="180.0" prefHeight="84.0" prefWidth="349.0" text="Hello Javi!!" textAlignment="CENTER" textFill="#686868">
+         <font>
+            <Font name="Rockwell" size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonLogOut" onAction="#handleButtonLogOutAction" layoutX="451.0" layoutY="413.0" mnemonicParsing="false" stylesheets="@buttonCss.css" text="Log Out" />
+   </children>
+</Pane>
