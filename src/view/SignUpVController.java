@@ -30,6 +30,8 @@ public class SignUpVController{
     @FXML
     private TextField textFieldUsername;
     @FXML
+    private ImageView imageViewUsername;
+    @FXML
     private ImageView imageViewEmail;
     @FXML
     private ImageView imageViewName;
@@ -94,6 +96,8 @@ public class SignUpVController{
         //
         //Focus lost
         passwordField.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
+        textFieldUsername.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
+        textFieldPassword.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
         //
         //Show primary window
         stage.show();
@@ -126,12 +130,32 @@ public class SignUpVController{
     }
 
     private void focusedPropertyChanged() {
-        if(passwordField.getText().isEmpty() || passwordField.getText().contains(" ")){
-            imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect")));
-            linePassword.setStroke(Color.RED);
-        } else {
-            imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword")));
-            linePassword.setStroke(Color.GREY);
+        if(!passwordField.isFocused()){
+            if(passwordField.getText().isEmpty() || passwordField.getText().contains(" ")){
+                imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
+                linePassword.setStroke(Color.RED);
+            } else {
+                imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
+                linePassword.setStroke(Color.GREY);
+            }
+        }
+        if(!textFieldPassword.isFocused()){
+            if(textFieldPassword.getText().isEmpty() || textFieldPassword.getText().contains(" ")){
+                imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
+                linePassword.setStroke(Color.RED);
+            } else {
+                imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
+                linePassword.setStroke(Color.GREY);
+            }
+        }
+        if(!textFieldUsername.isFocused()){
+            if(textFieldUsername.getText().isEmpty() || textFieldUsername.getText().contains(" ")){
+                imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserInconrrect.png")));
+                lineUsername.setStroke(Color.RED);
+            } else {
+                imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
+                lineUsername.setStroke(Color.GREY);
+            }
         }
     }
 
