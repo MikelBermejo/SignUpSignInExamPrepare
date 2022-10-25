@@ -67,7 +67,7 @@ public class ApplicationVController implements Initializable {
         try {
             if (new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to LogOut?").getResult().equals(ButtonType.YES)) {
                 // Carga el documento FXML y obtiene un objeto Parent
-                Parent root = FXMLLoader.load(getClass().getResource("SignInView.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("view/SignInView.fxml"));
                 // Crea una escena a partir del Parent
                 Scene scene = new Scene(root);
                 // Establece la escena en el escenario (Stage) y la muestra
