@@ -14,18 +14,29 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 /**
  *
- * @author 2dam
+ * @author Mikel
  */
 public class SignUpVController{
     private Stage stage;
     
     @FXML
     private TextField textFieldUsername;
+    @FXML
+    private ImageView imageViewEmail;
+    @FXML
+    private ImageView imageViewName;
+    @FXML
+    private ImageView imageViewPassword;
+    @FXML
+    private ImageView imageViewConfirmPassword;
     @FXML
     private TextField textFieldEmail;
     @FXML
@@ -82,7 +93,7 @@ public class SignUpVController{
         textFieldName.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
         //
         //Focus lost
-        
+        passwordField.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
         //
         //Show primary window
         stage.show();
@@ -111,6 +122,16 @@ public class SignUpVController{
         }
         if(passwordField.getText().length()>50){
             textFieldName.setText(textFieldName.getText().substring(0,50));
+        }
+    }
+
+    private void focusedPropertyChanged() {
+        if(passwordField.getText().isEmpty() || passwordField.getText().contains(" ")){
+            imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect")));
+            linePassword.setStroke(Color.RED);
+        } else {
+            imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword")));
+            linePassword.setStroke(Color.GREY);
         }
     }
 
