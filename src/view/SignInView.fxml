@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -73,15 +74,6 @@
             <Font name="Rockwell" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="buttonShowHide" layoutX="927.0" layoutY="329.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fx:id="imageViewShowHide" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/iconEye.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Label fx:id="labelInvalidUser" layoutX="631.0" layoutY="284.0" prefHeight="16.0" prefWidth="342.0" text="labelInvalidUser" textFill="RED" visible="false">
          <font>
             <Font name="Rockwell" size="12.0" />
@@ -92,5 +84,14 @@
             <Font name="Rockwell" size="12.0" />
          </font>
       </Label>
+      <ToggleButton fx:id="buttonShowHide" layoutX="927.0" layoutY="329.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fx:id="imageViewButton" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/iconEye.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </ToggleButton>
    </children>
 </Pane>

@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -44,7 +45,9 @@ public class SignInVController {
     @FXML
     private Button buttonSignUp;
     @FXML
-    private Button buttonShowHide;
+    private ToggleButton buttonShowHide;
+    @FXML
+    private ImageView imageViewButton;
     @FXML
     private Label labelInvalidUser;
     @FXML
@@ -70,16 +73,32 @@ public class SignInVController {
         stage.setTitle("SignIn");
         stage.setResizable(false);
 
-        textFieldUsername.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
-        textFieldUsername.focusedProperty().addListener((event) -> this.focusPropertyChange());
-        passwordField.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
-        textFieldPassword.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
+        textFieldUsername.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
+        textFieldUsername.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (oldValue) {
+                focusedPropertyChanged();
+            }
+        });
+        passwordField.textProperty().addListener((event) -> this.textChangedPrueba(KeyEvent.KEY_PRESSED));
+        passwordField.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
+        passwordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (oldValue) {
+                focusedPropertyChanged();
+            }
+        });
+        textFieldPassword.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
+        textFieldPassword.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (oldValue) {
+                focusedPropertyChanged();
+            }
+        });
         buttonSignIn.pressedProperty().addListener((event) -> this.signIn(ActionEvent.ACTION));
+        buttonShowHide.pressedProperty().addListener((event) -> this.showHide(ActionEvent.ACTION));
 
         stage.show();
     }
 
-    private void textChanged(EventType<KeyEvent> KEY_TYPED) {
+    private void textChanged(EventType<KeyEvent> KEY_TYPED, EventType<KeyEvent> KEY_PRESSED) {
         if (textFieldUsername.getText().length() > 25) {
             textFieldUsername.setText(textFieldUsername.getText().substring(0, 25));
         }
@@ -106,26 +125,50 @@ public class SignInVController {
         }
     }
 
-    private void focusPropertyChange() {
-        if (textFieldUsername.getText().contains(" ")) {
-            userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserIncorrect.png")));
-            usernameLine.setStroke(Color.RED);
-            labelInvalidUser.setText("Username can't contain an empty space");
-            labelInvalidUser.setVisible(true);
+    private void showHide(EventType<ActionEvent> ACTION) {
+        if (buttonShowHide.isSelected()) {
+            imageViewButton.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
+            passwordField.setVisible(false);
+            textFieldPassword.setVisible(true);
+            textFieldPassword.requestFocus();
         } else {
-            userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
-            usernameLine.setStroke(Color.GRAY);
-            labelInvalidUser.setVisible(false);
+            imageViewButton.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye.png")));
+            passwordField.setVisible(true);
+            textFieldPassword.setVisible(false);
+            passwordField.requestFocus();
         }
-        if (passwordField.getText().contains(" ") || textFieldPassword.getText().contains(" ")) {
-            passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
-            passwordLine.setStroke(Color.RED);
-            labelInvalidPassword.setText("Password can't contain an empty space");
-            labelInvalidPassword.setVisible(true);
-        } else {
-            passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
-            passwordLine.setStroke(Color.GRAY);
-            labelInvalidPassword.setVisible(false);
+    }
+
+    private void focusedPropertyChanged() {
+        if (!textFieldUsername.isFocused()) {
+            if (textFieldUsername.getText().contains(" ")) {
+                userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserIncorrect.png")));
+                usernameLine.setStroke(Color.RED);
+                labelInvalidUser.setText("Username can't contain an empty space");
+                labelInvalidUser.setVisible(true);
+            } else {
+                userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
+                usernameLine.setStroke(Color.GRAY);
+                labelInvalidUser.setVisible(false);
+            }
+        }
+        if (!passwordField.isFocused() && !textFieldPassword.isFocused()) {
+            if (passwordField.getText().contains(" ") || textFieldPassword.getText().contains(" ")) {
+                passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
+                passwordLine.setStroke(Color.RED);
+                labelInvalidPassword.setText("Password can't contain an empty space");
+                labelInvalidPassword.setVisible(true);
+            } else {
+                passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
+                passwordLine.setStroke(Color.GRAY);
+                labelInvalidPassword.setVisible(false);
+            }
+        }
+    }
+
+    private void textChangedPrueba(EventType<KeyEvent> KEY_PRESSED) {
+        if(passwordField.isVisible()){
+            textFieldPassword.setText(passwordField.getText());
         }
     }
 }
