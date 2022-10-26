@@ -5,8 +5,17 @@
  */
 package controller;
 
+import datatransferobject.MessageEnum;
+import datatransferobject.Package;
+import datatransferobject.User;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,22 +25,60 @@ public class ClientSocket {
     
     static final int PUERTO = 5000;
     static final String HOST = "localhost";
+    Package p = new Package();
+    User u = new User();
+    MessageEnum me = null;
     
-    public void conexionConServidor() {
+    public Package conexionConServidor(Package p) {
         try {
-            Socket socket;
-            socket = new Socket(HOST, PUERTO);
-            
-
+            Socket clientSocket;
+            clientSocket = new Socket(HOST, PUERTO);
+            enviarPackage(clientSocket, p);
+            p = recibirPackage(clientSocket);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
-
         }
+        return p;
     }
     
-    public static void main(String[] args) {
-        ClientSocket clientSocket = new ClientSocket();
-        clientSocket.conexionConServidor();
+    private void enviarPackage(Socket clientSocket, Package p) {
+        
+        OutputStream os = null;
+        try {
+            os = clientSocket.getOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(os);
+            oos.writeObject(p);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                os.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private Package recibirPackage(Socket clientSocket) {
+        
+        ObjectInputStream ois = null;
+        try {
+            InputStream is = clientSocket.getInputStream();
+            ois = new ObjectInputStream(is);
+            p = (Package) ois.readObject();
+            p.getDatos(u, me);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                ois.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientSocket.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return p;
     }
     
 }
