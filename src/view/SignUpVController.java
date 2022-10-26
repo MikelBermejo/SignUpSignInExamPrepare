@@ -6,6 +6,7 @@
 package view;
 
 
+import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.scene.input.KeyEvent;
 import javafx.fxml.FXML;
@@ -14,10 +15,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -66,9 +69,23 @@ public class SignUpVController{
     @FXML
     private Line lineConfirmPassword;
     @FXML
-    private Button buttonShowHide1;
+    private ToggleButton ButtonShowHide;
     @FXML
-    private Button buttonShowHide2;
+    private ToggleButton ButtonShowHideConfirm;
+    @FXML
+    private Text labelInvalidUser;
+    @FXML
+    private Text labelInvalidEmail;
+    @FXML
+    private Text labelInvalidName;
+    @FXML
+    private Text labelInvalidPassword;
+    @FXML
+    private Text labelInvalidConfirmPassword;
+    @FXML
+    private ImageView IconEye;
+    @FXML
+    private ImageView IconEye2;
     
     public Stage getStage() {
         return stage;
@@ -89,8 +106,10 @@ public class SignUpVController{
         //Add Listeners
         //Writing, key typed
         textFieldUsername.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
-        textFieldPassword.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
-        passwordField.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
+        textFieldPassword.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
+        passwordField.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
+        textFieldPassword.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_PRESSED));
+        passwordField.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_PRESSED));
         textFieldEmail.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
         textFieldName.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED));
         //
@@ -98,6 +117,12 @@ public class SignUpVController{
         passwordField.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
         textFieldUsername.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
         textFieldPassword.focusedProperty().addListener((event) -> this.focusedPropertyChanged());
+        //
+        //Button Actions
+        buttonSignIn.pressedProperty().addListener((event) -> this.signIn(ActionEvent.ACTION));
+        buttonSignUp.pressedProperty().addListener((event) -> this.signUp(ActionEvent.ACTION));
+        ButtonShowHide.pressedProperty().addListener((event) -> this.ShowHide(ActionEvent.ACTION));
+        ButtonShowHideConfirm.pressedProperty().addListener((event) -> this.ShowHide(ActionEvent.ACTION));
         //
         //Show primary window
         stage.show();
@@ -128,35 +153,65 @@ public class SignUpVController{
             textFieldName.setText(textFieldName.getText().substring(0,50));
         }
     }
-
+    
     private void focusedPropertyChanged() {
-        if(!passwordField.isFocused()){
-            if(passwordField.getText().isEmpty() || passwordField.getText().contains(" ")){
+        if(!passwordField.isFocused() && !textFieldPassword.isFocused()){
+            if(passwordField.getText().contains(" ")){
                 imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
                 linePassword.setStroke(Color.RED);
+                labelInvalidPassword.setText("Password can't contain an empty space.");
+                labelInvalidPassword.setVisible(true);
             } else {
                 imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
                 linePassword.setStroke(Color.GREY);
-            }
-        }
-        if(!textFieldPassword.isFocused()){
-            if(textFieldPassword.getText().isEmpty() || textFieldPassword.getText().contains(" ")){
-                imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
-                linePassword.setStroke(Color.RED);
-            } else {
-                imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
-                linePassword.setStroke(Color.GREY);
+                labelInvalidPassword.setVisible(false);
             }
         }
         if(!textFieldUsername.isFocused()){
-            if(textFieldUsername.getText().isEmpty() || textFieldUsername.getText().contains(" ")){
+            if(textFieldUsername.getText().contains(" ")){
                 imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserInconrrect.png")));
                 lineUsername.setStroke(Color.RED);
+                labelInvalidUser.setText("Username can't contain an empty space.");
+                labelInvalidUser.setVisible(true);
             } else {
                 imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
                 lineUsername.setStroke(Color.GREY);
+                labelInvalidUser.setVisible(false);
             }
         }
+    }
+
+    private void signIn(EventType<ActionEvent> ACTION) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void signUp(EventType<ActionEvent> ACTION) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void ShowHide(EventType<ActionEvent> ACTION) {
+        if (ButtonShowHide.isSelected()) {
+            IconEye.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
+            passwordField.setVisible(false);
+            textFieldPassword.setVisible(true);
+        } else {
+            IconEye.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye.png")));
+            passwordField.setVisible(true);
+            textFieldPassword.setVisible(false);
+        }
+        if (ButtonShowHideConfirm.isSelected()) {
+            IconEye2.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
+            passwordFieldConfirm.setVisible(false);
+            textFieldConfirmPassword.setVisible(true);
+        } else {
+            IconEye2.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye.png")));
+            passwordFieldConfirm.setVisible(true);
+            textFieldConfirmPassword.setVisible(false);
+        }
+    }
+
+    private void textChanged(EventType<KeyEvent> KEY_TYPED, EventType<KeyEvent> KEY_PRESSED) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
