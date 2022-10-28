@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import datatransferobject.User;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -33,7 +25,7 @@ public class ApplicationVController {
 
     private User user;
     private Stage stage;
-    private static final Logger LOGGER = Logger.getLogger("view");
+    private static final Logger LOGGER = Logger.getLogger("ApplicationVController");
 
     public Stage getStage() {
         return stage;
@@ -62,36 +54,44 @@ public class ApplicationVController {
             stage.setResizable(false);
             // La ventana recogerá un objeto User del cual cogerá el Username y lo asignará al labelMessage (“Hello [usuario]!!”)
             labelMessage.setText("Hello " + user.getLogin() + "!!");
-            
+
             // Confirmar el cierre de la aplicación
             stage.setOnCloseRequest(this::handleExitAction);
-            
+
             // Enseña la ventana principal
             stage.show();
             LOGGER.info("Application window initialized");
         } catch (Exception e) {
             String msg = "Error opening the window: " + e.getMessage();
-            Alert alert = new Alert(AlertType.ERROR,msg);
+            Alert alert = new Alert(AlertType.ERROR, msg);
+            alert.show();
             LOGGER.log(Level.SEVERE, msg);
         }
     }
-    
+
     private void handleExitAction(WindowEvent event) {
+        Alert a = new Alert(AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
+        a.showAndWait();
         try {
-            if (new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app").getResult().equals(ButtonType.YES)) {
+            if (a.getResult().equals(ButtonType.CANCEL)) {
+                event.consume();
+            } else {
                 Platform.exit();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             String msg = "Error closing the app: " + e.getMessage();
-            Alert alert = new Alert(AlertType.ERROR,msg);
+            Alert alert = new Alert(AlertType.ERROR, msg);
+            alert.show();
             LOGGER.log(Level.SEVERE, msg);
         }
     }
-    
+
     @FXML
     private void handleButtonLogOutAction(ActionEvent event) {
         try {
-            if (new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to LogOut?").getResult().equals(ButtonType.YES)) {
+            Alert a = new Alert(AlertType.CONFIRMATION, "Are you sure you want to Log Out?");
+            a.showAndWait();
+            if (a.getResult().equals(ButtonType.OK)) {
                 // Carga el documento FXML y obtiene un objeto Parent
                 Parent root = FXMLLoader.load(getClass().getResource("view/SignInView.fxml"));
                 // Crea una escena a partir del Parent
@@ -105,6 +105,7 @@ public class ApplicationVController {
             }
         } catch (IOException ex) {
             Alert alert = new Alert(AlertType.ERROR, ex.getMessage());
+            alert.show();
             LOGGER.log(Level.SEVERE, ex.getMessage());
         }
     }
