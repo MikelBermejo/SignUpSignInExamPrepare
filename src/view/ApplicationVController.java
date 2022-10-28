@@ -19,18 +19,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
  * @author Haizea and Julen
  */
-public class ApplicationVController implements Initializable {
+public class ApplicationVController {
 
     private User user;
     private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("view");
 
     public Stage getStage() {
         return stage;
@@ -48,18 +51,41 @@ public class ApplicationVController implements Initializable {
     private Label labelMessage;
 
     public void initStage(Parent root) {
-        // Crea una escena asociada al root
-        Scene scene = new Scene(root);
-        // Asocia una escena al escenario
-        stage.setScene(scene);
-        // La ventana tiene el título “Application”
-        stage.setTitle("Application");
-        // La ventana no es redimensionable
-        stage.setResizable(false);
-        // La ventana recogerá un objeto User del cual cogerá el Username y lo asignará al labelMessage (“Hello [usuario]!!”)
-        labelMessage.setText("Hello " + user.getLogin() + "!!");
-        // Enseña la ventana principal
-        stage.show();
+        try {
+            // Crea una escena asociada al root
+            Scene scene = new Scene(root);
+            // Asocia una escena al escenario
+            stage.setScene(scene);
+            // La ventana tiene el título “Application”
+            stage.setTitle("Application");
+            // La ventana no es redimensionable
+            stage.setResizable(false);
+            // La ventana recogerá un objeto User del cual cogerá el Username y lo asignará al labelMessage (“Hello [usuario]!!”)
+            labelMessage.setText("Hello " + user.getLogin() + "!!");
+            
+            // Confirmar el cierre de la aplicación
+            stage.setOnCloseRequest(this::handleExitAction);
+            
+            // Enseña la ventana principal
+            stage.show();
+            LOGGER.info("Application window initialized");
+        } catch (Exception e) {
+            String msg = "Error opening the window: " + e.getMessage();
+            Alert alert = new Alert(AlertType.ERROR,msg);
+            LOGGER.log(Level.SEVERE, msg);
+        }
+    }
+    
+    private void handleExitAction(WindowEvent event) {
+        try {
+            if (new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app").getResult().equals(ButtonType.YES)) {
+                Platform.exit();
+            }
+        } catch(Exception e) {
+            String msg = "Error closing the app: " + e.getMessage();
+            Alert alert = new Alert(AlertType.ERROR,msg);
+            LOGGER.log(Level.SEVERE, msg);
+        }
     }
     
     @FXML
@@ -74,16 +100,13 @@ public class ApplicationVController implements Initializable {
                 Stage stageSI = new Stage();
                 stageSI.setScene(scene);
                 stageSI.show();
-                Platform.exit();
+                stage.close();
+                LOGGER.info("Application window closed");
             }
         } catch (IOException ex) {
-            Logger.getLogger(ApplicationVController.class.getName()).log(Level.SEVERE, null, ex);
+            Alert alert = new Alert(AlertType.ERROR, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage());
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        
     }
 
 }
