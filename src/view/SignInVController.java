@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.util.logging.Level;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
@@ -22,6 +23,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import java.util.logging.Logger;
+import exceptions.InvalidPasswordValueException;
+import exceptions.InvalidUserException;
+import exceptions.InvalidUserValueException;
+import exceptions.TimeOutException;
+import exceptions.ConnectionErrorException;
 
 /**
  *
@@ -56,6 +63,7 @@ public class SignInVController {
     private ImageView userIcon;
     @FXML
     private ImageView passwordIcon;
+    private static final Logger LOGGER = Logger.getLogger("SignInVController.class");
 
     public Stage getStage() {
         return stage;
@@ -73,102 +81,139 @@ public class SignInVController {
         stage.setTitle("SignIn");
         stage.setResizable(false);
 
-        textFieldUsername.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
-        textFieldUsername.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (oldValue) {
-                focusedPropertyChanged();
-            }
-        });
-        passwordField.textProperty().addListener((event) -> this.textChangedPrueba(KeyEvent.KEY_PRESSED));
-        passwordField.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
-        passwordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (oldValue) {
-                focusedPropertyChanged();
-            }
-        });
-        textFieldPassword.textProperty().addListener((event) -> this.textChanged(KeyEvent.KEY_TYPED, KeyEvent.KEY_PRESSED));
-        textFieldPassword.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (oldValue) {
-                focusedPropertyChanged();
-            }
-        });
-        buttonSignIn.pressedProperty().addListener((event) -> this.signIn(ActionEvent.ACTION));
-        buttonShowHide.pressedProperty().addListener((event) -> this.showHide(ActionEvent.ACTION));
+        // USERNAME TEXT FIELD //
+        textFieldUsername.setOnKeyTyped(this::textChanged);
+        textFieldUsername.focusedProperty().addListener(this::focusedPropertyChanged);
+        
+        // PASSWORD FIELD //
+        passwordField.setOnKeyReleased(this::handleKeyReleased);
+        passwordField.setOnKeyTyped(this::textChanged);
+        passwordField.focusedProperty().addListener(this::focusedPropertyChanged);
+        
+        // PASSWORD TEXT FIELD //
+        textFieldPassword.focusedProperty().addListener(this::focusedPropertyChanged);
+        textFieldPassword.setOnKeyTyped(this::textChanged);
+        textFieldPassword.setOnKeyReleased(this::handleKeyReleased);
+        
+        // BUTTONS //
+        buttonSignIn.setOnAction(this::handleSignIn);
+        buttonShowHide.setOnAction(this::handleShowHide);
+        buttonSignUp.setOnAction(this::handleSignUp);
 
         stage.show();
+        LOGGER.info("SingIn window initialized");
     }
 
-    private void textChanged(EventType<KeyEvent> KEY_TYPED, EventType<KeyEvent> KEY_PRESSED) {
-        if (textFieldUsername.getText().length() > 25) {
-            textFieldUsername.setText(textFieldUsername.getText().substring(0, 25));
-        }
-        if (passwordField.getText().length() > 25) {
-            passwordField.setText(passwordField.getText().substring(0, 25));
-        }
-        if (textFieldPassword.getText().length() > 25) {
-            textFieldPassword.setText(textFieldPassword.getText().substring(0, 25));
-        }
-    }
-
-    private void signIn(EventType<ActionEvent> ACTION) {
-        if (textFieldUsername.getText().isEmpty()) {
-            userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserIncorrect.png")));
-            usernameLine.setStroke(Color.RED);
-            labelInvalidUser.setText("Username is empty");
-            labelInvalidUser.setVisible(true);
-        }
-        if (passwordField.getText().isEmpty() || textFieldPassword.getText().isEmpty()) {
-            passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
-            passwordLine.setStroke(Color.RED);
-            labelInvalidPassword.setText("Password is empty");
-            labelInvalidPassword.setVisible(true);
+    /**
+     * Comprueba que el texto introducido sea inferior a 25 caracteres.
+     * Si llega al máximo permitido no deja introducir más caracteres y sustrae y enseña los primeros 25
+     * 
+     * @param event un evento tipo KEY_TYPED para cuando se escribe un caracter 
+     */
+    private void textChanged(KeyEvent event) {
+        if (((TextField) event.getSource()).getText().length() >= 25) {
+            event.consume();
+            ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 25));
         }
     }
+    
+    /**
+     * Abre la ventana Sign Up y cierra la Sign in.
+     * 
+     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es pulsado
+     */
+    private void handleSignUp(ActionEvent event){
+        
+    }
 
-    private void showHide(EventType<ActionEvent> ACTION) {
+    /**
+     * Metodo para iniciar sesion
+     * 
+     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es pulsado
+     */
+    private void handleSignIn(ActionEvent event) {
+        buttonSignIn.requestFocus();
+        // Comprueba que los campos están informados y que el usuario y la contraseña son válidos 
+        // (cumplen los requisitos especificados en sus propios eventos)
+        // Si los datos se validan correctamente, se ejecuta el método doSignIn().
+        focusedPropertyChanged(null, true, false);
+    }
+
+    /**
+     * Comprueba en qué estado (presionado/no presionado) está la contraseña. 
+     * 
+     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es pulsado
+     */
+    private void handleShowHide(ActionEvent event) {
         if (buttonShowHide.isSelected()) {
+            // Si está presionado se muestra un textField y a imagen de imageShowHide es hideIcon.
             imageViewButton.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordField.setVisible(false);
             textFieldPassword.setVisible(true);
-            textFieldPassword.requestFocus();
         } else {
+            // Si no está presionado se muestra un passwordField y la imagen de imageShowHide es showIcon.
             imageViewButton.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye.png")));
             passwordField.setVisible(true);
             textFieldPassword.setVisible(false);
-            passwordField.requestFocus();
         }
     }
 
-    private void focusedPropertyChanged() {
-        if (!textFieldUsername.isFocused()) {
-            if (textFieldUsername.getText().contains(" ")) {
-                userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserIncorrect.png")));
-                usernameLine.setStroke(Color.RED);
-                labelInvalidUser.setText("Username can't contain an empty space");
-                labelInvalidUser.setVisible(true);
-            } else {
-                userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
-                usernameLine.setStroke(Color.GRAY);
-                labelInvalidUser.setVisible(false);
-            }
-        }
-        if (!passwordField.isFocused() && !textFieldPassword.isFocused()) {
-            if (passwordField.getText().contains(" ") || textFieldPassword.getText().contains(" ")) {
-                passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
-                passwordLine.setStroke(Color.RED);
-                labelInvalidPassword.setText("Password can't contain an empty space");
-                labelInvalidPassword.setVisible(true);
-            } else {
-                passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
-                passwordLine.setStroke(Color.GRAY);
-                labelInvalidPassword.setVisible(false);
-            }
-        }
-    }
-
-    private void textChangedPrueba(EventType<KeyEvent> KEY_PRESSED) {
-        if(passwordField.isVisible()){
+    /**
+     * Copia el texto de un campo al otro
+     * 
+     * @param event un evento tipo KEY_RELEASED el usuario deja de presionar la tecla en cuestion 
+     */
+    private void handleKeyReleased(KeyEvent event) {
+        if (passwordField.isVisible()) {
+            // Cuando se escribe un carácter en el passwordField se copia en el textFieldPassword.
             textFieldPassword.setText(passwordField.getText());
+        } else if (textFieldPassword.isVisible()) {
+            // Cuando se escribe un carácter en el textFieldPassword se copia en el passwordField.
+            passwordField.setText(textFieldPassword.getText());
+        }
+    }
+
+    /**
+     * Comprueba el cambio de foco
+     * 
+     * @param observable 
+     * @param oldValue 
+     * @param newValue 
+     */
+    private void focusedPropertyChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (oldValue) {
+            if (!textFieldUsername.isFocused()) {
+                try {
+                    if (textFieldUsername.getText().isEmpty()) throw new InvalidUserValueException("Enter a username");
+                    // Si el campo no está vacío comprobar que la contraseña tiene al menos 8 caracteres y que no hay espacios.
+                    // En caso de que no tenga 8 caracteres o contenga espacios en blanco cambiar el color de imagePassword y linePassword a rojo.
+                    if (textFieldUsername.getText().contains(" ")) throw new InvalidUserValueException("Username can't contain an empty space");
+                    userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
+                    usernameLine.setStroke(Color.GRAY);
+                    labelInvalidUser.setText("");
+                } catch (InvalidUserValueException ex) {
+                    userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserIncorrect.png")));
+                    usernameLine.setStroke(Color.RED);
+                    LOGGER.info(ex.getMessage());
+                    labelInvalidUser.setText(ex.getMessage());
+                }
+            }
+            if (!passwordField.isFocused() && !textFieldPassword.isFocused()) {
+                try {
+                    if (passwordField.getText().isEmpty() || textFieldPassword.getText().isEmpty()) throw new InvalidPasswordValueException("Enter a username");
+                    // Si el campo no está vacío comprobar que la contraseña tiene al menos 8 caracteres y que no hay espacios.
+                    // En caso de que no tenga 8 caracteres o contenga espacios en blanco cambiar el color de imagePassword y linePassword a rojo.
+                    if (passwordField.getText().contains(" ") || textFieldPassword.getText().contains(" ") || passwordField.getText().length() < 8 || textFieldPassword.getText().length() < 8) throw new InvalidPasswordValueException("Password must be at least 8 characters long and must not contain blank spaces");
+                    passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
+                    passwordLine.setStroke(Color.GRAY);
+                    labelInvalidPassword.setText("");
+                } catch (InvalidPasswordValueException ex){
+                    passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
+                    passwordLine.setStroke(Color.RED);
+                    LOGGER.info(ex.getMessage());
+                    labelInvalidPassword.setText(ex.getMessage());
+                }
+            }
         }
     }
 }
