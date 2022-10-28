@@ -13,9 +13,15 @@ import datatransferobject.User;
 
 /**
  *
- * @author haize
+ * @author Julen
  */
 public class ModelImplementation implements Model {
+    
+    /**
+     * Method that takes a user from the view and sends a package to the server
+     * @param user Class that has all data from a user
+     * @return p Class that contains a user and a MessageEnum
+     */
 
     @Override
     public Package doSignIn(User user) {
@@ -25,6 +31,11 @@ public class ModelImplementation implements Model {
         return p;
 
     }
+    /**
+     * Method that takes a user from the view and sends a package to the server
+     * @param user Class that has all data from a user
+     * @return p Class that contains a user and a MessageEnum
+     */
 
     @Override
     public Package doSignUp(User user) {
