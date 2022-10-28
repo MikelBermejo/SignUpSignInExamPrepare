@@ -23,6 +23,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import exceptions.InvalidUserValueException;
+import exceptions.InvalidUserException;
+import exceptions.InvalidPasswordValueException;
+import exceptions.InvalidConfirmPasswordValueException;
+import exceptions.InvalidEmailValueException;
+import exceptions.ConnectionErrorException;
+import exceptions.UserExistException;
+import exceptions.TimeOutException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
 
@@ -121,7 +130,6 @@ public class SignUpVController{
         passwordField.focusedProperty().addListener(this::focusedPropertyChangedPassword);
         textFieldEmail.focusedProperty().addListener(this::focusedPropertyChangedEmail);
         textFieldUsername.focusedProperty().addListener(this::focusedPropertyChanged);
-        textFieldName.focusedProperty().addListener(this::focusedPropertyChangedName);
         textFieldConfirmPassword.focusedProperty().addListener(this::focusedPropertyChangedPasswordConfirm);
         passwordFieldConfirm.focusedProperty().addListener(this::focusedPropertyChangedPasswordConfirm);
         
@@ -167,33 +175,35 @@ public class SignUpVController{
         }
     }
     
-    private void focusedPropertyChangedName(Observable value, Boolean oldValue, Boolean newValue) {
-        if(oldValue){
-            if(!textFieldName.isFocused()){
-                if(textFieldName.getText().isEmpty()){
-                    imageViewName.setImage(new Image(getClass().getResourceAsStream("/resources/iconFullNameIncorrect.png")));
-                    lineName.setStroke(Color.RED);
-                    labelInvalidName.setText("Full name is empty.");
-                } else {
-                    imageViewName.setImage(new Image(getClass().getResourceAsStream("/resources/iconFullName.png")));
-                    lineName.setStroke(Color.GREY);
-                    labelInvalidName.setText("");
-                }
+    private void nameIsEmptyOrNo() {
+        if(!textFieldName.isFocused()){
+            try{
+                if(textFieldName.getText().isEmpty()) throw new InvalidUserValueException("Name is empty");
+                imageViewName.setImage(new Image(getClass().getResourceAsStream("/resources/iconFullName.png")));
+                lineName.setStroke(Color.GREY);
+                labelInvalidName.setText("");
+
+            } catch (InvalidUserValueException e) {
+                imageViewName.setImage(new Image(getClass().getResourceAsStream("/resources/iconFullNameIncorrect.png")));
+                lineName.setStroke(Color.RED);
+                labelInvalidName.setText(e.getMessage());
             }
+
         }
     }
     
     private void focusedPropertyChangedEmail(Observable value, Boolean oldValue, Boolean newValue) {
         if(oldValue){  
-            if(!textFieldEmail.isFocused()){    
-                if(textFieldEmail.getText().matches("^[A-Za-z0-9+_.-]+@(.+)[A-Za-z0-9+_.-]")) {
+            if(!textFieldEmail.isFocused()){   
+                try{
+                    if(!textFieldEmail.getText().matches("^[A-Za-z0-9+_.-]+@(.+)[A-Za-z0-9+_.-]")) throw new InvalidEmailValueException("Invalid format of email (*@*.*)"); 
                     imageViewEmail.setImage(new Image(getClass().getResourceAsStream("/resources/iconEmail.png")));
                     lineEmail.setStroke(Color.GREY);
                     labelInvalidEmail.setText("");
-                } else {
+                } catch (InvalidEmailValueException e) {
                     imageViewEmail.setImage(new Image(getClass().getResourceAsStream("/resources/iconEmailIncorrect.png")));
                     lineEmail.setStroke(Color.RED);
-                    labelInvalidEmail.setText("Invalid format of email (*@*.*)");
+                    labelInvalidEmail.setText(e.getMessage());
                 }
                 
             }
@@ -202,14 +212,15 @@ public class SignUpVController{
     private void focusedPropertyChanged(Observable value, Boolean oldValue, Boolean newValue) {
         if(oldValue){
             if(!textFieldUsername.isFocused()){
-                if(textFieldUsername.getText().contains(" ") || textFieldUsername.getText().isEmpty()){
-                    imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserInconrrect.png")));
-                    lineUsername.setStroke(Color.RED);
-                    labelInvalidUser.setText("Username can't be empty nor contain an empty space.");
-                } else {
+                try{
+                    if(textFieldUsername.getText().contains(" ") || textFieldUsername.getText().isEmpty()) throw new InvalidUserValueException("Username can't be empty nor contain an empty space.");
                     imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
                     lineUsername.setStroke(Color.GREY);
                     labelInvalidUser.setText("");
+                } catch (InvalidUserValueException e) {
+                    imageViewUsername.setImage(new Image(getClass().getResourceAsStream("/resources/iconUserInconrrect.png")));
+                    lineUsername.setStroke(Color.RED);
+                    labelInvalidUser.setText(e.getMessage());
                 }
             }
         }
@@ -218,14 +229,15 @@ public class SignUpVController{
      private void focusedPropertyChangedPasswordConfirm(Observable value, Boolean oldValue, Boolean newValue){
         if(oldValue){
             if(!passwordFieldConfirm.isFocused() && !textFieldConfirmPassword.isFocused()){
-                if(!passwordFieldConfirm.getText().toString().equalsIgnoreCase(passwordField.getText().toString())){
-                    imageViewConfirmPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
-                    lineConfirmPassword.setStroke(Color.RED);
-                    labelInvalidConfirmPassword.setText("Doesn't match with the password.");
-                } else {
+                try{
+                    if(!passwordFieldConfirm.getText().toString().equalsIgnoreCase(passwordField.getText().toString())) throw new InvalidConfirmPasswordValueException("These passwords didn’t match");
                     imageViewConfirmPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
                     lineConfirmPassword.setStroke(Color.GREY);
                     labelInvalidConfirmPassword.setText("");
+                } catch (InvalidConfirmPasswordValueException e) {
+                    imageViewConfirmPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
+                    lineConfirmPassword.setStroke(Color.RED);
+                    labelInvalidConfirmPassword.setText(e.getMessage());
                 }
             }
         }
@@ -234,14 +246,15 @@ public class SignUpVController{
     private void focusedPropertyChangedPassword(Observable value, Boolean oldValue, Boolean newValue){
         if(oldValue){
             if(!passwordField.isFocused() && !textFieldPassword.isFocused()){
-                if(passwordField.getText().contains(" ") || passwordField.getText().length()<8 || passwordField.getText().isEmpty()){
-                    imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
-                    linePassword.setStroke(Color.RED);
-                    labelInvalidPassword.setText("Password can't be empty nor contain an empty space or his lenght is less than 8.");
-                } else {
+                try{
+                    if(passwordField.getText().contains(" ") || passwordField.getText().length()<8 || passwordField.getText().isEmpty()) throw new InvalidPasswordValueException("Password can't be empty nor contain an empty space or his lenght is less than 8.");
                     imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
                     linePassword.setStroke(Color.GREY);
                     labelInvalidUser.setText("");
+                } catch(InvalidPasswordValueException e) {
+                    imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
+                    linePassword.setStroke(Color.RED);
+                    labelInvalidPassword.setText(e.getMessage());
                 }
             }
         }
@@ -256,7 +269,7 @@ public class SignUpVController{
         focusedPropertyChangedPasswordConfirm(null, true, false);
         focusedPropertyChanged(null, true, false);
         focusedPropertyChangedEmail(null, true, false);
-        focusedPropertyChangedName(null, true, false);
+        nameIsEmptyOrNo();
     }
 
     private void ShowHide(EventType<ActionEvent> ACTION) {
@@ -286,10 +299,10 @@ public class SignUpVController{
         } else if (textFieldPassword.isVisible()){
             passwordField.setText(textFieldPassword.getText());
         }
-    }
-
-    
-
-   
-
+        if (passwordFieldConfirm.isVisible()){
+            textFieldConfirmPassword.setText(passwordFieldConfirm.getText());
+        } else if(textFieldConfirmPassword.isVisible()){
+            passwordFieldConfirm.setText(textFieldConfirmPassword.getText());
+        }
+    } 
 }
