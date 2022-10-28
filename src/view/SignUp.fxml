@@ -83,7 +83,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="buttonSignUp" layoutX="700.0" layoutY="530.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #64FF1A; -fx-background-radius: 50px;" text="Sign Up" textFill="WHITE">
+      <Button fx:id="buttonSignUp" defaultButton="true" layoutX="700.0" layoutY="530.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #64FF1A; -fx-background-radius: 50px;" text="Sign Up" textFill="WHITE">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
@@ -123,27 +123,27 @@
       </ImageView>
       <Button fx:id="buttonShowHide1" layoutX="920.0" layoutY="341.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0" style="-fx-background-color: transparent;" textFill="#686868" />
       <Button fx:id="buttonShowHide2" layoutX="920.0" layoutY="438.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0" style="-fx-background-color: transparent;" textFill="#686868" />
-      <Text fx:id="labelInvalidUser" fill="RED" layoutX="629.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="341.9999934732914">
+      <Text fx:id="labelInvalidUser" fill="RED" layoutX="629.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" visible="true" wrappingWidth="341.9999934732914">
          <font>
             <Font name="Rockwell" size="12.0" />
          </font>
       </Text>
-      <Text fx:id="labelInvalidEmail" fill="RED" layoutX="629.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="341.9999934732914">
+      <Text fx:id="labelInvalidEmail" fill="RED" layoutX="629.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" visible="true" wrappingWidth="341.9999934732914">
          <font>
             <Font size="12.0" />
          </font>
       </Text>
-      <Text fx:id="labelInvalidName" fill="RED" layoutX="629.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="341.9999934732914">
+      <Text fx:id="labelInvalidName" fill="RED" layoutX="629.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" visible="true" wrappingWidth="341.9999934732914">
          <font>
             <Font size="12.0" />
          </font>
       </Text>
-      <Text fx:id="labelInvalidPassword" fill="RED" layoutX="629.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="341.9999934732914">
+      <Text fx:id="labelInvalidPassword" fill="RED" layoutX="629.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" visible="true" wrappingWidth="341.9999934732914">
          <font>
             <Font size="12.0" />
          </font>
       </Text>
-      <Text fx:id="labelInvalidConfirmPassword" fill="RED" layoutX="629.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="341.9999934732914">
+      <Text fx:id="labelInvalidConfirmPassword" fill="RED" layoutX="629.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" visible="true" wrappingWidth="341.9999934732914">
          <font>
             <Font size="12.0" />
          </font>
