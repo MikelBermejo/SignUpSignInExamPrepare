@@ -3,37 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import view.SignInVController;
 
 /**
  *
  * @author 2dam
  */
-public class ApplicationFX extends Application {
-    
+public class SignUp extends Application{
+
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
+        // Carga el documento xml y obtiene un objeto Parent
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignUp.fxml"));
         Parent root = (Parent) loader.load();
         
-        SignInVController controller = ((SignInVController) loader.getController());
-        
+        SignUpVController controller = 
+                ((SignUpVController)loader.getController());
         controller.setStage(stage);
         
         controller.initStage(root);
     }
-
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
