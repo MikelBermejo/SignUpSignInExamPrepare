@@ -29,6 +29,8 @@ import exceptions.InvalidUserException;
 import exceptions.InvalidUserValueException;
 import exceptions.TimeOutException;
 import exceptions.ConnectionErrorException;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
 
 /**
  *
@@ -84,17 +86,17 @@ public class SignInVController {
         // USERNAME TEXT FIELD //
         textFieldUsername.setOnKeyTyped(this::textChanged);
         textFieldUsername.focusedProperty().addListener(this::focusedPropertyChanged);
-        
+
         // PASSWORD FIELD //
         passwordField.setOnKeyReleased(this::handleKeyReleased);
         passwordField.setOnKeyTyped(this::textChanged);
         passwordField.focusedProperty().addListener(this::focusedPropertyChanged);
-        
+
         // PASSWORD TEXT FIELD //
         textFieldPassword.focusedProperty().addListener(this::focusedPropertyChanged);
         textFieldPassword.setOnKeyTyped(this::textChanged);
         textFieldPassword.setOnKeyReleased(this::handleKeyReleased);
-        
+
         // BUTTONS //
         buttonSignIn.setOnAction(this::handleSignIn);
         buttonShowHide.setOnAction(this::handleShowHide);
@@ -105,10 +107,11 @@ public class SignInVController {
     }
 
     /**
-     * Comprueba que el texto introducido sea inferior a 25 caracteres.
-     * Si llega al máximo permitido no deja introducir más caracteres y sustrae y enseña los primeros 25
-     * 
-     * @param event un evento tipo KEY_TYPED para cuando se escribe un caracter 
+     * Comprueba que el texto introducido sea inferior a 25 caracteres. Si llega
+     * al máximo permitido no deja introducir más caracteres y sustrae y enseña
+     * los primeros 25
+     *
+     * @param event un evento tipo KEY_TYPED para cuando se escribe un caracter
      */
     private void textChanged(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 25) {
@@ -116,20 +119,33 @@ public class SignInVController {
             ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 25));
         }
     }
-    
+
     /**
      * Abre la ventana Sign Up y cierra la Sign in.
-     * 
-     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es pulsado
+     *
+     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
+     * pulsado
      */
-    private void handleSignUp(ActionEvent event){
-        
+    private void handleSignUp(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignUpView.fxml"));
+            Parent root = (Parent) loader.load();
+
+            SignUpVController controller = ((SignUpVController) loader.getController());
+
+            controller.setStage(stage);
+
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
      * Metodo para iniciar sesion
-     * 
-     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es pulsado
+     *
+     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
+     * pulsado
      */
     private void handleSignIn(ActionEvent event) {
         buttonSignIn.requestFocus();
@@ -140,9 +156,10 @@ public class SignInVController {
     }
 
     /**
-     * Comprueba en qué estado (presionado/no presionado) está la contraseña. 
-     * 
-     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es pulsado
+     * Comprueba en qué estado (presionado/no presionado) está la contraseña.
+     *
+     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
+     * pulsado
      */
     private void handleShowHide(ActionEvent event) {
         if (buttonShowHide.isSelected()) {
@@ -160,8 +177,9 @@ public class SignInVController {
 
     /**
      * Copia el texto de un campo al otro
-     * 
-     * @param event un evento tipo KEY_RELEASED el usuario deja de presionar la tecla en cuestion 
+     *
+     * @param event un evento tipo KEY_RELEASED el usuario deja de presionar la
+     * tecla en cuestion
      */
     private void handleKeyReleased(KeyEvent event) {
         if (passwordField.isVisible()) {
@@ -175,19 +193,23 @@ public class SignInVController {
 
     /**
      * Comprueba el cambio de foco
-     * 
-     * @param observable 
-     * @param oldValue 
-     * @param newValue 
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
      */
     private void focusedPropertyChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
             if (!textFieldUsername.isFocused()) {
                 try {
-                    if (textFieldUsername.getText().isEmpty()) throw new InvalidUserValueException("Enter a username");
+                    if (textFieldUsername.getText().isEmpty()) {
+                        throw new InvalidUserValueException("Enter a username");
+                    }
                     // Si el campo no está vacío comprobar que la contraseña tiene al menos 8 caracteres y que no hay espacios.
                     // En caso de que no tenga 8 caracteres o contenga espacios en blanco cambiar el color de imagePassword y linePassword a rojo.
-                    if (textFieldUsername.getText().contains(" ")) throw new InvalidUserValueException("Username can't contain an empty space");
+                    if (textFieldUsername.getText().contains(" ")) {
+                        throw new InvalidUserValueException("Username can't contain an empty space");
+                    }
                     userIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconUser.png")));
                     usernameLine.setStroke(Color.GRAY);
                     labelInvalidUser.setText("");
@@ -200,14 +222,18 @@ public class SignInVController {
             }
             if (!passwordField.isFocused() && !textFieldPassword.isFocused()) {
                 try {
-                    if (passwordField.getText().isEmpty() || textFieldPassword.getText().isEmpty()) throw new InvalidPasswordValueException("Enter a username");
+                    if (passwordField.getText().isEmpty() || textFieldPassword.getText().isEmpty()) {
+                        throw new InvalidPasswordValueException("Enter a password");
+                    }
                     // Si el campo no está vacío comprobar que la contraseña tiene al menos 8 caracteres y que no hay espacios.
                     // En caso de que no tenga 8 caracteres o contenga espacios en blanco cambiar el color de imagePassword y linePassword a rojo.
-                    if (passwordField.getText().contains(" ") || textFieldPassword.getText().contains(" ") || passwordField.getText().length() < 8 || textFieldPassword.getText().length() < 8) throw new InvalidPasswordValueException("Password must be at least 8 characters long and must not contain blank spaces");
+                    if (passwordField.getText().contains(" ") || textFieldPassword.getText().contains(" ") || passwordField.getText().length() < 8 || textFieldPassword.getText().length() < 8) {
+                        throw new InvalidPasswordValueException("Password must be at least 8 characters long and must not contain blank spaces");
+                    }
                     passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
                     passwordLine.setStroke(Color.GRAY);
                     labelInvalidPassword.setText("");
-                } catch (InvalidPasswordValueException ex){
+                } catch (InvalidPasswordValueException ex) {
                     passwordIcon.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
                     passwordLine.setStroke(Color.RED);
                     LOGGER.info(ex.getMessage());

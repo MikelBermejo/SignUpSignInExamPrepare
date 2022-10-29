@@ -31,9 +31,11 @@ import exceptions.InvalidEmailValueException;
 import exceptions.ConnectionErrorException;
 import exceptions.UserExistException;
 import exceptions.TimeOutException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
+import javafx.fxml.FXMLLoader;
 
 /**
  *
@@ -122,8 +124,10 @@ public class SignUpVController{
         passwordField.setOnKeyTyped(this::textChanged);
         passwordField.setOnKeyReleased(this::textChangedPressed);
         textFieldPassword.setOnKeyReleased(this::textChangedPressed);
-        textFieldEmail.setOnKeyTyped(this::textChanged);
-        textFieldName.setOnKeyTyped(this::textChanged);
+        passwordFieldConfirm.setOnKeyReleased(this::textChangedPressed);
+        textFieldConfirmPassword.setOnKeyReleased(this::textChangedPressed);
+        textFieldEmail.setOnKeyTyped(this::textChangedEmail);
+        textFieldName.setOnKeyTyped(this::textChangedName);
         //
         //Focus lost
         textFieldPassword.focusedProperty().addListener(this::focusedPropertyChangedPassword);
@@ -135,10 +139,10 @@ public class SignUpVController{
         
         //
         //Button Actions
-        buttonSignIn.pressedProperty().addListener((event) -> this.signIn(ActionEvent.ACTION));
+        buttonSignIn.setOnAction(this::signIn);
         buttonSignUp.pressedProperty().addListener((event) -> this.signUp(ActionEvent.ACTION));
-        ButtonShowHide.pressedProperty().addListener((event) -> this.ShowHide(ActionEvent.ACTION));
-        ButtonShowHideConfirm.pressedProperty().addListener((event) -> this.ShowHide(ActionEvent.ACTION));
+        ButtonShowHide.pressedProperty().addListener((event) -> this.showHide(ActionEvent.ACTION));
+        ButtonShowHideConfirm.pressedProperty().addListener((event) -> this.showHideConfirm(ActionEvent.ACTION));
         //
         //Show primary window
         stage.show();
@@ -153,25 +157,23 @@ public class SignUpVController{
         // Si devuelve una excepción se muestra una ventana emergente que muestra el error.
 
     private void textChanged(KeyEvent event) {
-        if(textFieldUsername.getText().length()>=25){
+        if (((TextField) event.getSource()).getText().length() >= 25) {
             event.consume();
-            textFieldUsername.setText(textFieldUsername.getText().substring(0,25));
+            ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 25));
         }
-        if(textFieldPassword.getText().length()>=25){
+    }
+    
+    private void textChangedEmail(KeyEvent event) {
+        if (((TextField) event.getSource()).getText().length() >= 35) {
             event.consume();
-            textFieldPassword.setText(textFieldPassword.getText().substring(0,25));
+            ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 35));
         }
-        if(passwordField.getText().length()>=25){
+    }
+    
+    private void textChangedName(KeyEvent event) {
+        if (((TextField) event.getSource()).getText().length() >= 50) {
             event.consume();
-            passwordField.setText(passwordField.getText().substring(0,25));
-        }
-        if(textFieldEmail.getText().length()>=35){
-            event.consume();
-            textFieldEmail.setText(textFieldEmail.getText().substring(0,35));
-        }
-        if(textFieldName.getText().length()>=50){
-            event.consume();
-            textFieldName.setText(textFieldName.getText().substring(0,50));
+            ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 50));
         }
     }
     
@@ -191,6 +193,7 @@ public class SignUpVController{
 
         }
     }
+    
     
     private void focusedPropertyChangedEmail(Observable value, Boolean oldValue, Boolean newValue) {
         if(oldValue){  
@@ -260,8 +263,19 @@ public class SignUpVController{
         }
     }
 
-    private void signIn(EventType<ActionEvent> ACTION) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void signIn(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
+            Parent root = (Parent) loader.load();
+            
+            SignInVController controller = ((SignInVController) loader.getController());
+            
+            controller.setStage(stage);
+            
+            controller.initStage(root);
+        } catch (IOException ex) {
+            Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void signUp(EventType<ActionEvent> ACTION) {
@@ -272,7 +286,7 @@ public class SignUpVController{
         nameIsEmptyOrNo();
     }
 
-    private void ShowHide(EventType<ActionEvent> ACTION) {
+    private void showHide(EventType<ActionEvent> ACTION) {
         if (ButtonShowHide.isSelected()) {
             IconEye.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordField.setVisible(false);
@@ -282,7 +296,10 @@ public class SignUpVController{
             passwordField.setVisible(true);
             textFieldPassword.setVisible(false);
         }
-        if (ButtonShowHideConfirm.isSelected()) {
+    }
+    
+    private void showHideConfirm(EventType<ActionEvent> ACTION) {
+      if (ButtonShowHideConfirm.isSelected()) {
             IconEye2.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordFieldConfirm.setVisible(false);
             textFieldConfirmPassword.setVisible(true);
@@ -305,4 +322,6 @@ public class SignUpVController{
             passwordFieldConfirm.setText(textFieldConfirmPassword.getText());
         }
     } 
+
+    
 }
