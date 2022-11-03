@@ -24,11 +24,11 @@ public class ModelImplementation implements Model {
      */
 
     @Override
-    public Package doSignIn(User user) {
+    public User doSignIn(User user) {
         Package p = new Package(user, MessageEnum.RE_SIGNIN);
         ClientSocket cs = new ClientSocket();
         p = cs.conexionConServidor(p);
-        return p;
+        return user;
 
     }
     /**
@@ -38,11 +38,11 @@ public class ModelImplementation implements Model {
      */
 
     @Override
-    public Package doSignUp(User user) {
+    public User doSignUp(User user) {
         Package p = new Package(user, MessageEnum.RE_SIGNUP);
         ClientSocket cs = new ClientSocket();
         p = cs.conexionConServidor(p);
-        return p;
+        return user;
 
     }
 
