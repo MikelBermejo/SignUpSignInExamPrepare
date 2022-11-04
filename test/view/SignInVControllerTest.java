@@ -6,6 +6,9 @@
 package view;
 
 import java.util.concurrent.TimeoutException;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main.ApplicationFX;
@@ -21,6 +24,7 @@ import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import static org.junit.Assert.*;
+import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 
 /**
  *
@@ -29,12 +33,21 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignInVControllerTest extends ApplicationTest {
     
+    private TextField textFieldUsername;
+    private PasswordField passwordField;
+    private TextField textFieldPassword;
+    private Label labelInvalidUser;
+    private Label labelInvalidPassword;
+    
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(ApplicationFX.class);
     }
 
+    /**
+     * Test of the initial stage of the login view
+     */
     @Test
     public void test1_InitialStage() {
         verifyThat("#textFieldUsername", hasText(""));
@@ -44,77 +57,116 @@ public class SignInVControllerTest extends ApplicationTest {
         verifyThat("#buttonSignUp", isEnabled());
     }
     
+    /**
+     * Test if the labels appear when both fields are empty and the SignIn button is pressed
+     */
     @Test
     public void test2_BothEmpty() {
+        labelInvalidUser=lookup("#labelInvalidUser").query();
+        labelInvalidPassword=lookup("#labelInvalidPassword").query();
         push(KeyCode.ENTER);
-        verifyThat("#labelInvalidUser", isVisible());
-        verifyThat("#labelInvalidPassword", isVisible());
+        //verifyThat("#labelInvalidUser", hasText("Enter a username"));
+        assertEquals("Enter a username", labelInvalidUser.getText());
+        //verifyThat("#labelInvalidPassword", hasText("Enter a password"));
+        assertEquals("Enter a password", labelInvalidPassword.getText());
         clickOn("#buttonSignIn");
-        verifyThat("#labelInvalidUser", isVisible());
-        verifyThat("#labelInvalidPassword", isVisible());
+        assertEquals("Enter a username", labelInvalidUser.getText());
+        assertEquals("Enter a password", labelInvalidPassword.getText());
     }
     
+    /**
+     * Tests for the username TextField
+     */
     @Test
-    public void test3_Username(){
+    public void test3_UsernameIsInvalid(){
+        textFieldUsername=lookup("#textFieldUsername").query();
+        labelInvalidUser=lookup("#labelInvalidUser").query();
+        // First test if the label appears when there is a space in the textField //
         clickOn("#textFieldUsername");
         write("test test");
         clickOn("#passwordField");
-        verifyThat("#labelInvalidUser", isVisible());
+        assertEquals("Username can't contain an empty space", labelInvalidUser.getText());
+        // Then test if the text field can contain more than 25 characters //
         clickOn("#textFieldUsername");
-        eraseText(10);
-        write("test");
-        clickOn("#passwordField");
-        verifyThat("#labelInvalidUser", isVisible());
-        clickOn("#textFieldUsername");
-        eraseText(4);
+        eraseText(9);
         write("123456789012345678901234567890");
-        // Texto mayor que 25 //
+        assertTrue(textFieldUsername.getText().length() <= 25);
+        // Finaly test if the username is correct the label doesn't appear //
+        doubleClickOn("#textFieldUsername").push(KeyCode.DELETE);
+        write("test");
+        clickOn("#passwordField");
+        assertEquals("", labelInvalidUser.getText());       
     }
     
+    /**
+     * Tests for the passwordField
+     */
     @Test
-    public void test4_passwordField(){
+    public void test4_passwordFieldIsInvalid(){
+        passwordField=lookup("#passwordField").query();
+        labelInvalidPassword=lookup("#labelInvalidPassword").query();
+        // First test if the password is more than 8 characters long //
         clickOn("#passwordField");
         write("test");
         clickOn("#textFieldUsername");
-        verifyThat("#labelInvalidPassword", isVisible());
+        assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
+        // Now we test when it is more than 8 characters long but contins spaces //
         clickOn("#passwordField");
         eraseText(4);
         write("test test");
         clickOn("#textFieldUsername");
-        verifyThat("#labelInvalidPassword", isVisible());
+        assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
+        // Test if it can contain more than 25 characters //
         clickOn("#passwordField");
         eraseText(9);
+        write("123456789012345678901234567890");
+        assertTrue(passwordField.getText().length() <= 25);
+        // Test when the password is correct //
+        doubleClickOn("#passwordField").push(KeyCode.DELETE);
         write("testtest");
         clickOn("#textFieldUsername");
-        verifyThat("#labelInvalidPassword", isVisible());
-        // Texto mayor que 25 //
+        assertEquals("", labelInvalidPassword.getText());
     }
     
+    /**
+     * Test if both of the password fields share the same text
+     */
     @Test
-    public void test5_showHide(){
+    public void test5_showHideSameText(){
+        passwordField=lookup("#passwordField").query();
+        textFieldPassword=lookup("#textFieldPassword").query();
         clickOn("#buttonShowHide");
-        verifyThat("#textFieldPassword", isVisible());
-        /**
-         * Mirar que el texto es el mismo en ambos 
-         */
+        assertEquals(passwordField.getText(), textFieldPassword.getText());
     }
     
+    /**
+     * Test for the password textField
+     */
     @Test 
-    public void test6_textFieldPassword(){
+    public void test6_textFieldPasswordIsInvalid(){
+        textFieldPassword=lookup("#textFieldPassword").query();
+        labelInvalidPassword=lookup("#labelInvalidPassword").query();
+        // First test if the password is more than 8 characters long //
         clickOn("#textFieldPassword");
         eraseText(8);
         write("test");
         clickOn("#textFieldUsername");
-        verifyThat("#labelInvalidPassword", isVisible());
+        assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
+        // Now we test when it is more than 8 characters long but contins spaces //
         clickOn("#textFieldPassword");
         eraseText(4);
         write("test test");
         clickOn("#textFieldUsername");
-        verifyThat("#labelInvalidPassword", isVisible());
+        assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
+        // Test if it can contain more than 25 characters //
         clickOn("#textFieldPassword");
         eraseText(9);
+        write("123456789012345678901234567890");
+        assertTrue(textFieldPassword.getText().length() <= 25);
+        // Test when the password is correct //
+        doubleClickOn("#textFieldPassword").push(KeyCode.DELETE);
         write("testtest");
         clickOn("#textFieldUsername");
-        verifyThat("#labelInvalidPassword", isVisible());
+        assertEquals("", labelInvalidPassword.getText());
     }
 }
