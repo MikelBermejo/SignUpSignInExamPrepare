@@ -6,6 +6,10 @@
 package view;
 
 
+import datatransferobject.Model;
+import datatransferobject.User;
+import datatransferobject.UserPrivilege;
+import datatransferobject.UserStatus;
 import java.util.function.UnaryOperator;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
@@ -29,13 +33,16 @@ import exceptions.InvalidPasswordValueException;
 import exceptions.InvalidConfirmPasswordValueException;
 import exceptions.InvalidEmailValueException;
 import exceptions.ConnectionErrorException;
+import exceptions.MaxConnectionExceededException;
 import exceptions.UserExistException;
 import exceptions.TimeOutException;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
+import model.ModelFactory;
 
 /**
  *
@@ -140,7 +147,19 @@ public class SignUpVController{
         //
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
-        buttonSignUp.pressedProperty().addListener((event) -> this.signUp(ActionEvent.ACTION));
+        buttonSignUp.pressedProperty().addListener((event) -> {
+            try {
+                this.signUp(ActionEvent.ACTION);
+            } catch (UserExistException ex) {
+                Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionErrorException ex) {
+                Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TimeOutException ex) {
+                Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MaxConnectionExceededException ex) {
+                Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         ButtonShowHide.pressedProperty().addListener((event) -> this.showHide(ActionEvent.ACTION));
         ButtonShowHideConfirm.pressedProperty().addListener((event) -> this.showHideConfirm(ActionEvent.ACTION));
         //
@@ -278,12 +297,15 @@ public class SignUpVController{
         }
     }
 
-    private void signUp(EventType<ActionEvent> ACTION) {
+    private void signUp(EventType<ActionEvent> ACTION) throws UserExistException, ConnectionErrorException, TimeOutException, MaxConnectionExceededException {
         focusedPropertyChangedPassword(null, true, false);
         focusedPropertyChangedPasswordConfirm(null, true, false);
         focusedPropertyChanged(null, true, false);
         focusedPropertyChangedEmail(null, true, false);
         nameIsEmptyOrNo();
+        Model model = ModelFactory.getModel();
+        User user = new User(textFieldUsername.getText().toString(),textFieldEmail.getText().toString(),textFieldName.getText().toString(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText().toString(),new Timestamp(System.currentTimeMillis()));
+        model.doSignUp(user);
     }
 
     private void showHide(EventType<ActionEvent> ACTION) {
