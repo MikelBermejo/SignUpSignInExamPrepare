@@ -87,7 +87,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="buttonSignUp" defaultButton="true" layoutX="700.0" layoutY="530.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #64FF1A; -fx-background-radius: 50px;" text="Sign Up" textFill="WHITE">
+      <Button fx:id="buttonSignUp" onAction="#signUp" defaultButton="true" layoutX="700.0" layoutY="530.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #64FF1A; -fx-background-radius: 50px;" text="Sign Up" textFill="WHITE">
          <font>
             <Font name="Rockwell" size="18.0" />
          </font>
