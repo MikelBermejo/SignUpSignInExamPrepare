@@ -50,7 +50,7 @@ import model.ModelFactory;
  */
 public class SignUpVController{
     private Stage stage;
-    private static final Logger LOGGER = Logger.getLogger("SignUpVController");
+    
     @FXML
     private TextField textFieldUsername;
     @FXML
@@ -147,8 +147,9 @@ public class SignUpVController{
         //
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
-        ButtonShowHide.pressedProperty().addListener((event) -> this.showHide(ActionEvent.ACTION));
-        ButtonShowHideConfirm.pressedProperty().addListener((event) -> this.showHideConfirm(ActionEvent.ACTION));
+        buttonSignUp.setOnAction(this::signUp);
+        ButtonShowHide.setOnAction(this::showHide);
+        ButtonShowHideConfirm.setOnAction(this::showHide);
         //
         //Show primary window
         stage.show();
@@ -271,7 +272,6 @@ public class SignUpVController{
 
     private void signIn(ActionEvent event) {
         try {
-            LOGGER.info("going signIn");
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
             
@@ -284,15 +284,29 @@ public class SignUpVController{
             Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    @FXML
-    private void signUp(ActionEvent event) throws UserExistException, MaxConnectionExceededException, TimeOutException, ConnectionErrorException {
+
+    private void signUp(ActionEvent event) {
+        focusedPropertyChangedPassword(null, true, false);
+        focusedPropertyChangedPasswordConfirm(null, true, false);
+        focusedPropertyChanged(null, true, false);
+        focusedPropertyChangedEmail(null, true, false);
+        nameIsEmptyOrNo();
         Model model = ModelFactory.getModel();
         User user = new User(textFieldUsername.getText().toString(),textFieldEmail.getText().toString(),textFieldName.getText().toString(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText().toString(),new Timestamp(System.currentTimeMillis()));
-        model.doSignUp(user);
+        try {
+            model.doSignUp(user);
+        } catch (UserExistException ex) {
+            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionErrorException ex) {
+            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeOutException ex) {
+            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MaxConnectionExceededException ex) {
+            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void showHide(EventType<ActionEvent> ACTION) {
+    private void showHide(ActionEvent event) {
         if (ButtonShowHide.isSelected()) {
             IconEye.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordField.setVisible(false);
@@ -304,7 +318,7 @@ public class SignUpVController{
         }
     }
     
-    private void showHideConfirm(EventType<ActionEvent> ACTION) {
+    private void showHideConfirm(ActionEvent event) {
       if (ButtonShowHideConfirm.isSelected()) {
             IconEye2.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordFieldConfirm.setVisible(false);
