@@ -9,6 +9,10 @@ import datatransferobject.MessageEnum;
 import datatransferobject.Model;
 import datatransferobject.Package;
 import datatransferobject.User;
+import exceptions.ConnectionErrorException;
+import exceptions.InvalidUserException;
+import exceptions.MaxConnectionExceededException;
+import exceptions.UserExistException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,15 +38,25 @@ public class ModelImplementation implements Model {
      */
 
     @Override
-    public User doSignIn(User user) {
+    public User doSignIn(User user) throws InvalidUserException, MaxConnectionExceededException, ConnectionErrorException {
         try {
             sckt = new Socket(HOST,PORT);
             oos = new ObjectOutputStream(sckt.getOutputStream());
-            ois = new ObjectInputStream(sckt.getInputStream());
+            
             Package pack = new Package(user,MessageEnum.RE_SIGNIN);
             oos.writeObject(pack);
             
+            ois = new ObjectInputStream(sckt.getInputStream());
             pack = (Package) ois.readObject();
+            
+            switch(pack.getMessage()) {
+                case AN_INVALIDUSER:
+                    throw new InvalidUserException("Incorrect username or password.");
+                case AN_MAXCONNECTION:
+                    throw new MaxConnectionExceededException("The maximum number of request reached. Try again later.");
+                case AN_CONNECTIONERROR:
+                    throw new ConnectionErrorException("Connection error with the database. Try again later.");
+            }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ModelImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -59,11 +73,10 @@ public class ModelImplementation implements Model {
     /**
      * Method that takes a user from the view and sends a package to the server
      * @param user Class that has all data from a user
-     * @return p Class that contains a user and a MessageEnum
      */
 
     @Override
-    public void doSignUp(User user) {
+    public void doSignUp(User user) throws MaxConnectionExceededException, ConnectionErrorException, UserExistException {
         try {
             sckt = new Socket(HOST,PORT);
             oos = new ObjectOutputStream(sckt.getOutputStream());
@@ -73,6 +86,14 @@ public class ModelImplementation implements Model {
             
             ois = new ObjectInputStream(sckt.getInputStream());
             pack = (Package) ois.readObject();
+            switch(pack.getMessage()) {
+                case AN_USEREXIST:
+                    throw new UserExistException("This user already exist.");
+                case AN_MAXCONNECTION:
+                    throw new MaxConnectionExceededException("The maximum number of request reached. Try again later.");
+                case AN_CONNECTIONERROR:
+                    throw new ConnectionErrorException("Connection error with the database. Try again later.");
+            }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ModelImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

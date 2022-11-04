@@ -42,6 +42,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import model.ModelFactory;
 
 /**
@@ -50,6 +51,7 @@ import model.ModelFactory;
  */
 public class SignUpVController{
     private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("SignUpVController.class");
     
     @FXML
     private TextField textFieldUsername;
@@ -286,23 +288,17 @@ public class SignUpVController{
     }
 
     private void signUp(ActionEvent event) {
-        focusedPropertyChangedPassword(null, true, false);
-        focusedPropertyChangedPasswordConfirm(null, true, false);
-        focusedPropertyChanged(null, true, false);
-        focusedPropertyChangedEmail(null, true, false);
+
         nameIsEmptyOrNo();
         Model model = ModelFactory.getModel();
-        User user = new User(textFieldUsername.getText().toString(),textFieldEmail.getText().toString(),textFieldName.getText().toString(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText().toString(),new Timestamp(System.currentTimeMillis()));
+        User user = new User(textFieldUsername.getText(), textFieldEmail.getText(),textFieldName.getText(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText(),new Timestamp(System.currentTimeMillis()));
         try {
             model.doSignUp(user);
-        } catch (UserExistException ex) {
-            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ConnectionErrorException ex) {
-            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TimeOutException ex) {
-            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MaxConnectionExceededException ex) {
-            Logger.getLogger(SignUpVController.class.getName()).log(Level.SEVERE, null, ex);
+            signIn(event);
+        } catch (UserExistException | ConnectionErrorException | TimeOutException | MaxConnectionExceededException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
+            alert.show();
+            LOGGER.info(ex.getMessage());
         }
     }
 

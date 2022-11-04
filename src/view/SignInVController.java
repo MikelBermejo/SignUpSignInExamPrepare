@@ -5,6 +5,8 @@
  */
 package view;
 
+import datatransferobject.Model;
+import datatransferobject.User;
 import java.util.logging.Level;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -29,8 +31,11 @@ import exceptions.InvalidUserException;
 import exceptions.InvalidUserValueException;
 import exceptions.TimeOutException;
 import exceptions.ConnectionErrorException;
+import exceptions.MaxConnectionExceededException;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import model.ModelFactory;
 
 /**
  *
@@ -39,6 +44,7 @@ import javafx.fxml.FXMLLoader;
 public class SignInVController {
 
     private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("SignInVController.class");
     @FXML
     private TextField textFieldUsername;
     @FXML
@@ -65,7 +71,7 @@ public class SignInVController {
     private ImageView userIcon;
     @FXML
     private ImageView passwordIcon;
-    private static final Logger LOGGER = Logger.getLogger("SignInVController.class");
+    
 
     public Stage getStage() {
         return stage;
@@ -153,6 +159,27 @@ public class SignInVController {
         // (cumplen los requisitos especificados en sus propios eventos)
         // Si los datos se validan correctamente, se ejecuta el método doSignIn().
         focusedPropertyChanged(null, true, false);
+        Model model = ModelFactory.getModel();
+        User user = new User();
+        user.setLogin(textFieldUsername.getText());
+        user.setPassword(textFieldPassword.getText());
+        try {
+            user = model.doSignIn(user);
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/ApplicationView.fxml"));
+                    Parent root = (Parent) loader.load();
+                    ApplicationVController controller = ((ApplicationVController) loader.getController());
+                    controller.setStage(stage);
+                    controller.setUser(user);
+                    controller.initStage(root);
+                } catch (IOException ex) {
+                    Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        } catch (InvalidUserException | ConnectionErrorException | TimeOutException | MaxConnectionExceededException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
+            alert.show();
+            LOGGER.info(ex.getMessage());
+        }
     }
 
     /**
