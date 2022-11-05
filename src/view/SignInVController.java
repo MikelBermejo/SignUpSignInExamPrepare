@@ -104,7 +104,7 @@ public class SignInVController {
         textFieldPassword.setOnKeyReleased(this::handleKeyReleased);
 
         // BUTTONS //
-        buttonSignIn.setOnAction(this::handleSignIn);
+
         buttonShowHide.setOnAction(this::handleShowHide);
         buttonSignUp.setOnAction(this::handleSignUp);
 
@@ -153,6 +153,7 @@ public class SignInVController {
      * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
      * pulsado
      */
+    @FXML
     private void handleSignIn(ActionEvent event) {
         buttonSignIn.requestFocus();
         // Comprueba que los campos están informados y que el usuario y la contraseña son válidos 
@@ -172,6 +173,7 @@ public class SignInVController {
                     controller.setStage(stage);
                     controller.setUser(user);
                     controller.initStage(root);
+                   
                 } catch (IOException ex) {
                     Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
                 }

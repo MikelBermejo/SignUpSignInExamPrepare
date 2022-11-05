@@ -149,7 +149,6 @@ public class SignUpVController{
         //
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
-        buttonSignUp.setOnAction(this::signUp);
         ButtonShowHide.setOnAction(this::showHide);
         ButtonShowHideConfirm.setOnAction(this::showHide);
         //
@@ -276,19 +275,16 @@ public class SignUpVController{
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
-            
             SignInVController controller = ((SignInVController) loader.getController());
-            
             controller.setStage(stage);
-            
             controller.initStage(root);
         } catch (IOException ex) {
             Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    @FXML
     private void signUp(ActionEvent event) {
-
         nameIsEmptyOrNo();
         Model model = ModelFactory.getModel();
         User user = new User(textFieldUsername.getText(), textFieldEmail.getText(),textFieldName.getText(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText(),new Timestamp(System.currentTimeMillis()));
