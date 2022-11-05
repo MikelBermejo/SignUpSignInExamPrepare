@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../resources/signUpSignInStyle.css" fx:controller="view.ApplicationVController">
+<Pane fx:id="panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../resources/buttonCss.css" fx:controller="view.ApplicationVController">
    <children>
       <ImageView fx:id="imgFondo" fitHeight="600.0" fitWidth="1100.0" pickOnBounds="true">
          <image>
@@ -21,6 +21,6 @@
             <Font name="Rockwell" size="40.0" />
          </font>
       </Label>
-      <Button fx:id="buttonLogOut" onAction="#handleButtonLogOutAction" layoutX="451.0" layoutY="413.0" mnemonicParsing="false" stylesheets="@buttonCss.css" text="Log Out" />
+      <Button fx:id="buttonLogOut" onAction="#handleButtonLogOutAction" layoutX="451.0" layoutY="413.0" mnemonicParsing="false" text="Log Out" />
    </children>
 </Pane>

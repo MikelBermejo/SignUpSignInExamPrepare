@@ -92,15 +92,11 @@ public class ApplicationVController {
             Alert a = new Alert(AlertType.CONFIRMATION, "Are you sure you want to Log Out?");
             a.showAndWait();
             if (a.getResult().equals(ButtonType.OK)) {
-                // Carga el documento FXML y obtiene un objeto Parent
-                Parent root = FXMLLoader.load(getClass().getResource("view/SignInView.fxml"));
-                // Crea una escena a partir del Parent
-                Scene scene = new Scene(root);
-                // Establece la escena en el escenario (Stage) y la muestra
-                Stage stageSI = new Stage();
-                stageSI.setScene(scene);
-                stageSI.show();
-                stage.close();
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
+                Parent root = (Parent) loader.load();
+                SignUpVController controller = ((SignUpVController) loader.getController());
+                controller.setStage(stage);
+                controller.initStage(root);
                 LOGGER.info("Application window closed");
             }
         } catch (IOException ex) {

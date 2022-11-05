@@ -31,7 +31,7 @@
             <Image url="@../resources/iconPassword.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonSignIn" defaultButton="true" layoutX="702.0" layoutY="485.0" mnemonicParsing="false" stylesheets="@../resources/buttonCss.css" text="Sign In">
+      <Button fx:id="buttonSignIn" onAction="#handleSignIn" defaultButton="true" layoutX="702.0" layoutY="485.0" mnemonicParsing="false" text="Sign In" stylesheets="@../resources/buttonCss.css">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
