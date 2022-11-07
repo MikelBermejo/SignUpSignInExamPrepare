@@ -132,6 +132,8 @@ public class SignInVController {
      */
     private void handleSignUp(ActionEvent event) {
         try {
+            stage.close();
+            LOGGER.info("SignIn window closed");
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignUpView.fxml"));
             Parent root = (Parent) loader.load();
 
@@ -140,6 +142,7 @@ public class SignInVController {
             controller.setStage(stage);
 
             controller.initStage(root);
+            LOGGER.info("SignUp window opened");
         } catch (IOException ex) {
             Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -166,13 +169,15 @@ public class SignInVController {
             try {
                 user = model.doSignIn(user);
                 try {
+                    stage.close();
+                    LOGGER.info("SignIn window closed");
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/ApplicationView.fxml"));
                     Parent root = (Parent) loader.load();
                     ApplicationVController controller = ((ApplicationVController) loader.getController());
                     controller.setStage(stage);
                     controller.setUser(user);
                     controller.initStage(root);
-
+                    LOGGER.info("Application window opened");
                 } catch (IOException ex) {
                     Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
                 }

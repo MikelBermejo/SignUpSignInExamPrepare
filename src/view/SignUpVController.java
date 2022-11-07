@@ -273,11 +273,14 @@ public class SignUpVController{
 
     private void signIn(ActionEvent event) {
         try {
+            stage.close();
+            LOGGER.info("SignUp window closed");
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
             SignInVController controller = ((SignInVController) loader.getController());
             controller.setStage(stage);
             controller.initStage(root);
+            LOGGER.info("SignIn window opened");
         } catch (IOException ex) {
             Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
         }
