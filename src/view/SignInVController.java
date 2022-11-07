@@ -71,7 +71,6 @@ public class SignInVController {
     private ImageView userIcon;
     @FXML
     private ImageView passwordIcon;
-    
 
     public Stage getStage() {
         return stage;
@@ -104,7 +103,6 @@ public class SignInVController {
         textFieldPassword.setOnKeyReleased(this::handleKeyReleased);
 
         // BUTTONS //
-
         buttonShowHide.setOnAction(this::handleShowHide);
         buttonSignUp.setOnAction(this::handleSignUp);
 
@@ -160,12 +158,13 @@ public class SignInVController {
         // (cumplen los requisitos especificados en sus propios eventos)
         // Si los datos se validan correctamente, se ejecuta el método doSignIn().
         focusedPropertyChanged(null, true, false);
-        Model model = ModelFactory.getModel();
-        User user = new User();
-        user.setLogin(textFieldUsername.getText());
-        user.setPassword(textFieldPassword.getText());
-        try {
-            user = model.doSignIn(user);
+        if (labelInvalidPassword.getText().equalsIgnoreCase("") && labelInvalidUser.getText().equalsIgnoreCase("")) {
+            Model model = ModelFactory.getModel();
+            User user = new User();
+            user.setLogin(textFieldUsername.getText());
+            user.setPassword(textFieldPassword.getText());
+            try {
+                user = model.doSignIn(user);
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/ApplicationView.fxml"));
                     Parent root = (Parent) loader.load();
@@ -173,14 +172,15 @@ public class SignInVController {
                     controller.setStage(stage);
                     controller.setUser(user);
                     controller.initStage(root);
-                   
+
                 } catch (IOException ex) {
                     Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-        } catch (InvalidUserException | ConnectionErrorException | TimeOutException | MaxConnectionExceededException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
-            alert.show();
-            LOGGER.info(ex.getMessage());
+            } catch (InvalidUserException | ConnectionErrorException | TimeOutException | MaxConnectionExceededException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
+                alert.show();
+                LOGGER.info(ex.getMessage());
+            }
         }
     }
 
