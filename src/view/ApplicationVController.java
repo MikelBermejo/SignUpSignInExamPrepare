@@ -94,7 +94,7 @@ public class ApplicationVController {
             if (a.getResult().equals(ButtonType.OK)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
-                SignUpVController controller = ((SignUpVController) loader.getController());
+                SignInVController controller = ((SignInVController) loader.getController());
                 controller.setStage(stage);
                 controller.initStage(root);
                 LOGGER.info("Application window closed");
