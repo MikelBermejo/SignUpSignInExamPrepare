@@ -92,12 +92,14 @@ public class ApplicationVController {
             Alert a = new Alert(AlertType.CONFIRMATION, "Are you sure you want to Log Out?");
             a.showAndWait();
             if (a.getResult().equals(ButtonType.OK)) {
+                stage.close();
+                LOGGER.info("Application window closed");
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
                 SignInVController controller = ((SignInVController) loader.getController());
                 controller.setStage(stage);
                 controller.initStage(root);
-                LOGGER.info("Application window closed");
+                LOGGER.info("SignIn window opened");
             }
         } catch (IOException ex) {
             Alert alert = new Alert(AlertType.ERROR, ex.getMessage());
