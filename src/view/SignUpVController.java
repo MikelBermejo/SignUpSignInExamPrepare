@@ -6,6 +6,10 @@
 package view;
 
 
+import datatransferobject.Model;
+import datatransferobject.User;
+import datatransferobject.UserPrivilege;
+import datatransferobject.UserStatus;
 import java.util.function.UnaryOperator;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
@@ -29,13 +33,17 @@ import exceptions.InvalidPasswordValueException;
 import exceptions.InvalidConfirmPasswordValueException;
 import exceptions.InvalidEmailValueException;
 import exceptions.ConnectionErrorException;
+import exceptions.MaxConnectionExceededException;
 import exceptions.UserExistException;
 import exceptions.TimeOutException;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import model.ModelFactory;
 
 /**
  *
@@ -43,6 +51,7 @@ import javafx.fxml.FXMLLoader;
  */
 public class SignUpVController{
     private Stage stage;
+    private static final Logger LOGGER = Logger.getLogger("SignUpVController.class");
     
     @FXML
     private TextField textFieldUsername;
@@ -140,9 +149,8 @@ public class SignUpVController{
         //
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
-        buttonSignUp.pressedProperty().addListener((event) -> this.signUp(ActionEvent.ACTION));
-        ButtonShowHide.pressedProperty().addListener((event) -> this.showHide(ActionEvent.ACTION));
-        ButtonShowHideConfirm.pressedProperty().addListener((event) -> this.showHideConfirm(ActionEvent.ACTION));
+        ButtonShowHide.setOnAction(this::showHide);
+        ButtonShowHideConfirm.setOnAction(this::showHide);
         //
         //Show primary window
         stage.show();
@@ -265,28 +273,35 @@ public class SignUpVController{
 
     private void signIn(ActionEvent event) {
         try {
+            stage.close();
+            LOGGER.info("SignUp window closed");
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
-            
             SignInVController controller = ((SignInVController) loader.getController());
-            
             controller.setStage(stage);
-            
             controller.initStage(root);
+            LOGGER.info("SignIn window opened");
         } catch (IOException ex) {
             Logger.getLogger(SignInVController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void signUp(EventType<ActionEvent> ACTION) {
-        focusedPropertyChangedPassword(null, true, false);
-        focusedPropertyChangedPasswordConfirm(null, true, false);
-        focusedPropertyChanged(null, true, false);
-        focusedPropertyChangedEmail(null, true, false);
+    
+    @FXML
+    private void signUp(ActionEvent event) {
         nameIsEmptyOrNo();
+        Model model = ModelFactory.getModel();
+        User user = new User(textFieldUsername.getText(), textFieldEmail.getText(),textFieldName.getText(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText(),new Timestamp(System.currentTimeMillis()));
+        try {
+            model.doSignUp(user);
+            signIn(event);
+        } catch (UserExistException | ConnectionErrorException | TimeOutException | MaxConnectionExceededException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
+            alert.show();
+            LOGGER.info(ex.getMessage());
+        }
     }
 
-    private void showHide(EventType<ActionEvent> ACTION) {
+    private void showHide(ActionEvent event) {
         if (ButtonShowHide.isSelected()) {
             IconEye.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordField.setVisible(false);
@@ -298,7 +313,7 @@ public class SignUpVController{
         }
     }
     
-    private void showHideConfirm(EventType<ActionEvent> ACTION) {
+    private void showHideConfirm(ActionEvent event) {
       if (ButtonShowHideConfirm.isSelected()) {
             IconEye2.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
             passwordFieldConfirm.setVisible(false);
