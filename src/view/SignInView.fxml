@@ -14,11 +14,27 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInVController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInVController">
    <children>
       <TextField id="textFieldUsername" fx:id="textFieldUsername" layoutX="672.0" layoutY="225.0" prefHeight="50.0" prefWidth="300.0" promptText="Username" style="-fx-background-color: -fx-control-inner-background;" />
       <PasswordField id="passwordField" fx:id="passwordField" layoutX="672.0" layoutY="311.0" prefHeight="50.0" prefWidth="300.0" promptText="Password" style="-fx-background-color: -fx-control-inner-background;" />
       <TextField id="textFieldPassword" fx:id="textFieldPassword" layoutX="672.0" layoutY="311.0" prefHeight="50.0" prefWidth="300.0" promptText="Password" style="-fx-background-color: -fx-control-inner-background;" visible="false" />
+      <ToggleButton fx:id="buttonShowHide" layoutX="927.0" layoutY="320.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fx:id="imageViewButton" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/iconEye.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </ToggleButton>
+      <Button fx:id="buttonSignUp" layoutX="778.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Sign Up" textFill="#64ff1a">
+         <font>
+            <Font name="Rockwell" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <Line fx:id="usernameLine" endX="150.0" layoutX="822.0" layoutY="279.0" startX="-191.0" stroke="#686868" />
       <ImageView fx:id="userIcon" fitHeight="40.0" fitWidth="40.0" layoutX="631.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -50,13 +66,6 @@
             <ColorAdjust brightness="-0.2" saturation="0.5" />
          </effect>
       </ImageView>
-      <Button fx:id="buttonSignUp" layoutX="778.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Sign Up" textFill="#64ff1a">
-         <font>
-            <Font name="Rockwell" size="14.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
       <Label layoutX="631.0" layoutY="385.0" text="Don't have an account?" textFill="#686868">
          <font>
             <Font name="Rockwell" size="14.0" />
@@ -91,14 +100,5 @@
             <Font name="Rockwell" size="12.0" />
          </font>
       </Label>
-      <ToggleButton fx:id="buttonShowHide" layoutX="927.0" layoutY="320.0" mnemonicParsing="false" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fx:id="imageViewButton" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/iconEye.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </ToggleButton>
    </children>
 </Pane>
