@@ -33,8 +33,11 @@ import exceptions.TimeOutException;
 import exceptions.ConnectionErrorException;
 import exceptions.MaxConnectionExceededException;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.WindowEvent;
 import model.ModelFactory;
 
 /**
@@ -89,27 +92,53 @@ public class SignInVController {
         stage.setResizable(false);
 
         // USERNAME TEXT FIELD //
+        // Comprobar si el texto cambia
         textFieldUsername.setOnKeyTyped(this::textChanged);
+        // Comprobacion del cambio de foco en el campo de texto
         textFieldUsername.focusedProperty().addListener(this::focusedPropertyChanged);
 
         // PASSWORD FIELD //
+        // Comprobar si el texto cambia
         passwordField.setOnKeyReleased(this::handleKeyReleased);
         passwordField.setOnKeyTyped(this::textChanged);
+        // Comprobacion del cambio de foco en el campo de contraseña
         passwordField.focusedProperty().addListener(this::focusedPropertyChanged);
 
         // PASSWORD TEXT FIELD //
+        // Comprobacion del cambio de foco en el campo de texto
         textFieldPassword.focusedProperty().addListener(this::focusedPropertyChanged);
+        // Comprobar si el texto cambia
         textFieldPassword.setOnKeyTyped(this::textChanged);
         textFieldPassword.setOnKeyReleased(this::handleKeyReleased);
 
         // BUTTONS //
+        // Comprueba si los botones son pulsados
         buttonShowHide.setOnAction(this::handleShowHide);
         buttonSignUp.setOnAction(this::handleSignUp);
+        // Comprueba cuando el boton "x" para cerrar la ventana es pulsado
+        stage.setOnCloseRequest(this::handleExitAction);
 
         stage.show();
         LOGGER.info("SingIn window initialized");
     }
-
+    
+    private void handleExitAction(WindowEvent event) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
+        a.showAndWait();
+        try {
+            if (a.getResult().equals(ButtonType.CANCEL)) {
+                event.consume();
+            } else {
+                Platform.exit();
+            }
+        } catch (Exception e) {
+            String msg = "Error closing the app: " + e.getMessage();
+            Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+            alert.show();
+            LOGGER.log(Level.SEVERE, msg);
+        }
+    }
+    
     /**
      * Comprueba que el texto introducido sea inferior a 25 caracteres. Si llega
      * al máximo permitido no deja introducir más caracteres y sustrae y enseña
