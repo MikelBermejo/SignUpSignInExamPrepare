@@ -167,13 +167,18 @@ public class SignInVControllerTest extends ApplicationTest {
         clickOn("#textFieldUsername");
         assertEquals("", labelInvalidPassword.getText());
     }
-
+    
     /**
      * Test to see if a user can log in
      */
     @Test
     public void test7_signInTest() {
         clickOn("#buttonSignIn");
-        verifyThat(window("My Window"), WindowMatchers.isShowing());
+        verifyThat(window("SignIn"), WindowMatchers.isNotShowing());
+    }
+    
+    @Test
+    public void test8_closeWindow() {
+        closeCurrentWindow();
     }
 }
