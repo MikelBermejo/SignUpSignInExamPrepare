@@ -170,7 +170,7 @@ public class SignInVControllerTest extends ApplicationTest {
         clickOn("#textFieldUsername");
         assertEquals("", labelInvalidPassword.getText());
     }
-
+    
     /**
      * Test to see if a user can log in
      */
