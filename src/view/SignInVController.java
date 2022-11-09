@@ -305,20 +305,4 @@ public class SignInVController {
             }
         }
     }
-    private void handleExitAction(WindowEvent event) {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
-        a.showAndWait();
-        try {
-            if (a.getResult().equals(ButtonType.CANCEL)) {
-                event.consume();
-            } else {
-                Platform.exit();
-            }
-        } catch (Exception e) {
-            String msg = "Error closing the app: " + e.getMessage();
-            Alert alert = new Alert(Alert.AlertType.ERROR, msg);
-            alert.show();
-            LOGGER.log(Level.SEVERE, msg);
-        }
-    }
 }

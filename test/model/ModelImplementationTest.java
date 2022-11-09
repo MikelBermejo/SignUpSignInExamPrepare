@@ -13,6 +13,7 @@ import datatransferobject.UserStatus;
 import exceptions.ConnectionErrorException;
 import exceptions.InvalidUserException;
 import exceptions.MaxConnectionExceededException;
+import exceptions.TimeOutException;
 import exceptions.UserExistException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
@@ -57,6 +58,8 @@ public class ModelImplementationTest extends TestCase {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionErrorException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeOutException ex) {
+            Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         assertEquals(user, result);
     }
@@ -77,6 +80,8 @@ public class ModelImplementationTest extends TestCase {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionErrorException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeOutException ex) {
+            Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         assertEquals(user, result);
     }
@@ -96,6 +101,8 @@ public class ModelImplementationTest extends TestCase {
         } catch (ConnectionErrorException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UserExistException ex) {
+            Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeOutException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
