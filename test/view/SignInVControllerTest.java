@@ -176,14 +176,15 @@ public class SignInVControllerTest extends ApplicationTest {
      */
     @Test
     public void test7_signInTest() {
-        paneSignIn = lookup("#SignIn").query();
         clickOn("#buttonSignIn");
         verifyThat("Incorrect username or password.", isVisible());
+        push(KeyCode.ENTER);
         clickOn("#textFieldUsername");
         eraseText(1);
         clickOn("#textFieldPassword");
         eraseText(1);
         clickOn("#buttonSignIn");
-        assertThat(paneSignIn, isInvisible());
+        paneSignIn = lookup("#applicationPane").query();
+        assertThat(paneSignIn, isVisible());
     }
 }
