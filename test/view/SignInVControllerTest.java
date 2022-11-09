@@ -20,7 +20,6 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
-import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import static org.junit.Assert.*;
@@ -37,7 +36,7 @@ public class SignInVControllerTest extends ApplicationTest {
     private TextField textFieldPassword;
     private Label labelInvalidUser;
     private Label labelInvalidPassword;
-    private Pane paneSignIn;
+    private Pane paneMessage;
 
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
@@ -184,7 +183,7 @@ public class SignInVControllerTest extends ApplicationTest {
         clickOn("#textFieldPassword");
         eraseText(1);
         clickOn("#buttonSignIn");
-        paneSignIn = lookup("#applicationPane").query();
-        assertThat(paneSignIn, isVisible());
+        paneMessage = lookup("#applicationPane").query();
+        assertThat(paneMessage, isVisible());
     }
 }
