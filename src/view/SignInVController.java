@@ -33,8 +33,11 @@ import exceptions.TimeOutException;
 import exceptions.ConnectionErrorException;
 import exceptions.MaxConnectionExceededException;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.WindowEvent;
 import model.ModelFactory;
 
 /**
@@ -105,6 +108,9 @@ public class SignInVController {
         // BUTTONS //
         buttonShowHide.setOnAction(this::handleShowHide);
         buttonSignUp.setOnAction(this::handleSignUp);
+        
+        // CLOSE //
+        stage.setOnCloseRequest(this::handleExitAction);
 
         stage.show();
         LOGGER.info("SingIn window initialized");
@@ -139,7 +145,7 @@ public class SignInVController {
 
             SignUpVController controller = ((SignUpVController) loader.getController());
 
-            controller.setStage(stage);
+            controller.setStage(new Stage());
 
             controller.initStage(root);
             LOGGER.info("SignUp window opened");
@@ -174,7 +180,7 @@ public class SignInVController {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/ApplicationView.fxml"));
                     Parent root = (Parent) loader.load();
                     ApplicationVController controller = ((ApplicationVController) loader.getController());
-                    controller.setStage(stage);
+                    controller.setStage(new Stage());
                     controller.setUser(user);
                     controller.initStage(root);
                     LOGGER.info("Application window opened");
@@ -274,6 +280,22 @@ public class SignInVController {
                     labelInvalidPassword.setText(ex.getMessage());
                 }
             }
+        }
+    }
+    private void handleExitAction(WindowEvent event) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
+        a.showAndWait();
+        try {
+            if (a.getResult().equals(ButtonType.CANCEL)) {
+                event.consume();
+            } else {
+                Platform.exit();
+            }
+        } catch (Exception e) {
+            String msg = "Error closing the app: " + e.getMessage();
+            Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+            alert.show();
+            LOGGER.log(Level.SEVERE, msg);
         }
     }
 }

@@ -97,7 +97,7 @@ public class ApplicationVController {
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
                 SignInVController controller = ((SignInVController) loader.getController());
-                controller.setStage(stage);
+                controller.setStage(new Stage());
                 controller.initStage(root);
                 LOGGER.info("SignIn window opened");
             }
