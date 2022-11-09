@@ -5,7 +5,9 @@
  */
 package model;
 
+import datatransferobject.MessageEnum;
 import datatransferobject.User;
+import datatransferobject.Package;
 import datatransferobject.UserPrivilege;
 import datatransferobject.UserStatus;
 import exceptions.ConnectionErrorException;
@@ -46,7 +48,6 @@ public class ModelImplementationTest extends TestCase {
         System.out.println("doSignIn");
         User user = new User("userTest", "userTest@gmail.com", "userTest", UserStatus.ENABLED, UserPrivilege.USER, "abcd*1234", new Timestamp(System.currentTimeMillis()));
         ModelImplementation instance = new ModelImplementation();
-        User expResult = new User("userTest", "userTest@gmail.com", "userTest", UserStatus.ENABLED, UserPrivilege.USER, "abcd*1234", new Timestamp(System.currentTimeMillis()));
         User result=null;
         try {
             result = instance.doSignIn(user);
@@ -57,7 +58,7 @@ public class ModelImplementationTest extends TestCase {
         } catch (ConnectionErrorException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        assertEquals(expResult, result);
+        assertEquals(user, result);
     }
     /**
      * Test of doSignIn method, of class ModelImplementation.
@@ -67,7 +68,6 @@ public class ModelImplementationTest extends TestCase {
         System.out.println("doSignIn");
         User user = new User("aaaaaa", "aaaa@aaaaa.aaa", "aaa aaaa", UserStatus.ENABLED, UserPrivilege.USER, "aaaaaa", new Timestamp(System.currentTimeMillis()));
         ModelImplementation instance = new ModelImplementation();
-        User expResult = new User("userTest", "userTest@gmail.com", "userTest", UserStatus.ENABLED, UserPrivilege.USER, "abcd*1234", new Timestamp(System.currentTimeMillis()));
         User result=null;
         try {
             result = instance.doSignIn(user);
@@ -78,7 +78,7 @@ public class ModelImplementationTest extends TestCase {
         } catch (ConnectionErrorException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        assertEquals(expResult, result);
+        assertEquals(user, result);
     }
 
     /**
