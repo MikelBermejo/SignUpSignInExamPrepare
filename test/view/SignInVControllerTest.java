@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 import main.ApplicationFX;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -19,26 +19,26 @@ import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
-import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import static org.junit.Assert.*;
-import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 
 /**
- *
+ * Test class for the sign in window
  * @author sendoa
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignInVControllerTest extends ApplicationTest {
-    
+
     private TextField textFieldUsername;
     private PasswordField passwordField;
     private TextField textFieldPassword;
     private Label labelInvalidUser;
     private Label labelInvalidPassword;
-    
+    private Pane paneSignIn;
+
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
@@ -56,14 +56,15 @@ public class SignInVControllerTest extends ApplicationTest {
         verifyThat("#buttonSignIn", isEnabled());
         verifyThat("#buttonSignUp", isEnabled());
     }
-    
+
     /**
-     * Test if the labels appear when both fields are empty and the SignIn button is pressed
+     * Test if the labels appear when both fields are empty and the SignIn
+     * button is pressed
      */
     @Test
     public void test2_BothEmpty() {
-        labelInvalidUser=lookup("#labelInvalidUser").query();
-        labelInvalidPassword=lookup("#labelInvalidPassword").query();
+        labelInvalidUser = lookup("#labelInvalidUser").query();
+        labelInvalidPassword = lookup("#labelInvalidPassword").query();
         push(KeyCode.ENTER);
         //verifyThat("#labelInvalidUser", hasText("Enter a username"));
         assertEquals("Enter a username", labelInvalidUser.getText());
@@ -73,14 +74,14 @@ public class SignInVControllerTest extends ApplicationTest {
         assertEquals("Enter a username", labelInvalidUser.getText());
         assertEquals("Enter a password", labelInvalidPassword.getText());
     }
-    
+
     /**
      * Tests for the username TextField
      */
     @Test
-    public void test3_UsernameIsInvalid(){
-        textFieldUsername=lookup("#textFieldUsername").query();
-        labelInvalidUser=lookup("#labelInvalidUser").query();
+    public void test3_UsernameIsInvalid() {
+        textFieldUsername = lookup("#textFieldUsername").query();
+        labelInvalidUser = lookup("#labelInvalidUser").query();
         // First test if the label appears when there is a space in the textField //
         clickOn("#textFieldUsername");
         write("test test");
@@ -93,18 +94,18 @@ public class SignInVControllerTest extends ApplicationTest {
         assertTrue(textFieldUsername.getText().length() <= 25);
         // Finaly test if the username is correct the label doesn't appear //
         doubleClickOn("#textFieldUsername").push(KeyCode.DELETE);
-        write("test");
+        write("test1");
         clickOn("#passwordField");
-        assertEquals("", labelInvalidUser.getText());       
+        assertEquals("", labelInvalidUser.getText());
     }
-    
+
     /**
      * Tests for the passwordField
      */
     @Test
-    public void test4_passwordFieldIsInvalid(){
-        passwordField=lookup("#passwordField").query();
-        labelInvalidPassword=lookup("#labelInvalidPassword").query();
+    public void test4_passwordFieldIsInvalid() {
+        passwordField = lookup("#passwordField").query();
+        labelInvalidPassword = lookup("#labelInvalidPassword").query();
         // First test if the password is more than 8 characters long //
         clickOn("#passwordField");
         write("test");
@@ -127,25 +128,25 @@ public class SignInVControllerTest extends ApplicationTest {
         clickOn("#textFieldUsername");
         assertEquals("", labelInvalidPassword.getText());
     }
-    
+
     /**
      * Test if both of the password fields share the same text
      */
     @Test
-    public void test5_showHideSameText(){
-        passwordField=lookup("#passwordField").query();
-        textFieldPassword=lookup("#textFieldPassword").query();
+    public void test5_showHideSameText() {
+        passwordField = lookup("#passwordField").query();
+        textFieldPassword = lookup("#textFieldPassword").query();
         clickOn("#buttonShowHide");
         assertEquals(passwordField.getText(), textFieldPassword.getText());
     }
-    
+
     /**
      * Test for the password textField
      */
-    @Test 
-    public void test6_textFieldPasswordIsInvalid(){
-        textFieldPassword=lookup("#textFieldPassword").query();
-        labelInvalidPassword=lookup("#labelInvalidPassword").query();
+    @Test
+    public void test6_textFieldPasswordIsInvalid() {
+        textFieldPassword = lookup("#textFieldPassword").query();
+        labelInvalidPassword = lookup("#labelInvalidPassword").query();
         // First test if the password is more than 8 characters long //
         clickOn("#textFieldPassword");
         eraseText(8);
@@ -165,8 +166,24 @@ public class SignInVControllerTest extends ApplicationTest {
         assertTrue(textFieldPassword.getText().length() <= 25);
         // Test when the password is correct //
         doubleClickOn("#textFieldPassword").push(KeyCode.DELETE);
-        write("testtest");
+        write("testtest1");
         clickOn("#textFieldUsername");
         assertEquals("", labelInvalidPassword.getText());
+    }
+    
+    /**
+     * Test to see if a user can log in
+     */
+    @Test
+    public void test7_signInTest() {
+        paneSignIn = lookup("#SignIn").query();
+        clickOn("#buttonSignIn");
+        verifyThat("Incorrect username or password.", isVisible());
+        clickOn("#textFieldUsername");
+        eraseText(1);
+        clickOn("#textFieldPassword");
+        eraseText(1);
+        clickOn("#buttonSignIn");
+        assertThat(paneSignIn, isInvisible());
     }
 }

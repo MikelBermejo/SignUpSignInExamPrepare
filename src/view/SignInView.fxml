@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInVController">
+<Pane fx:id="SignIn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInVController">
    <children>
       <TextField id="textFieldUsername" fx:id="textFieldUsername" layoutX="672.0" layoutY="225.0" prefHeight="50.0" prefWidth="300.0" promptText="Username" style="-fx-background-color: -fx-control-inner-background;" />
       <PasswordField id="passwordField" fx:id="passwordField" layoutX="672.0" layoutY="311.0" prefHeight="50.0" prefWidth="300.0" promptText="Password" style="-fx-background-color: -fx-control-inner-background;" />
