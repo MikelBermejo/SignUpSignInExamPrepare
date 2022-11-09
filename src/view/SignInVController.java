@@ -168,7 +168,7 @@ public class SignInVController {
 
             SignUpVController controller = ((SignUpVController) loader.getController());
 
-            controller.setStage(stage);
+            controller.setStage(new Stage());
 
             controller.initStage(root);
             LOGGER.info("SignUp window opened");
@@ -203,7 +203,7 @@ public class SignInVController {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/ApplicationView.fxml"));
                     Parent root = (Parent) loader.load();
                     ApplicationVController controller = ((ApplicationVController) loader.getController());
-                    controller.setStage(stage);
+                    controller.setStage(new Stage());
                     controller.setUser(user);
                     controller.initStage(root);
                     LOGGER.info("Application window opened");
@@ -303,6 +303,22 @@ public class SignInVController {
                     labelInvalidPassword.setText(ex.getMessage());
                 }
             }
+        }
+    }
+    private void handleExitAction(WindowEvent event) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
+        a.showAndWait();
+        try {
+            if (a.getResult().equals(ButtonType.CANCEL)) {
+                event.consume();
+            } else {
+                Platform.exit();
+            }
+        } catch (Exception e) {
+            String msg = "Error closing the app: " + e.getMessage();
+            Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+            alert.show();
+            LOGGER.log(Level.SEVERE, msg);
         }
     }
 }

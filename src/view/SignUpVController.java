@@ -40,9 +40,12 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.WindowEvent;
 import model.ModelFactory;
 
 /**
@@ -150,7 +153,10 @@ public class SignUpVController{
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
         ButtonShowHide.setOnAction(this::showHide);
-        ButtonShowHideConfirm.setOnAction(this::showHide);
+        ButtonShowHideConfirm.setOnAction(this::showHideConfirm);
+        //
+        // CLOSE //
+        stage.setOnCloseRequest(this::handleExitAction);
         //
         //Show primary window
         stage.show();
@@ -278,7 +284,7 @@ public class SignUpVController{
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
             Parent root = (Parent) loader.load();
             SignInVController controller = ((SignInVController) loader.getController());
-            controller.setStage(stage);
+            controller.setStage(new Stage());
             controller.initStage(root);
             LOGGER.info("SignIn window opened");
         } catch (IOException ex) {
@@ -338,5 +344,20 @@ public class SignUpVController{
         }
     } 
 
-    
+    private void handleExitAction(WindowEvent event) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
+        a.showAndWait();
+        try {
+            if (a.getResult().equals(ButtonType.CANCEL)) {
+                event.consume();
+            } else {
+                Platform.exit();
+            }
+        } catch (Exception e) {
+            String msg = "Error closing the app: " + e.getMessage();
+            Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+            alert.show();
+            LOGGER.log(Level.SEVERE, msg);
+        }
+    }
 }
