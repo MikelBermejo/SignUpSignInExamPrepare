@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import main.ApplicationFX;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -19,12 +20,13 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import static org.testfx.matcher.base.NodeMatchers.isInvisible;
+import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import static org.junit.Assert.*;
-import org.testfx.matcher.base.WindowMatchers;
 
 /**
- *
+ * Test class for the sign in window
  * @author sendoa
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -35,6 +37,7 @@ public class SignInVControllerTest extends ApplicationTest {
     private TextField textFieldPassword;
     private Label labelInvalidUser;
     private Label labelInvalidPassword;
+    private Pane paneSignIn;
 
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
@@ -91,7 +94,7 @@ public class SignInVControllerTest extends ApplicationTest {
         assertTrue(textFieldUsername.getText().length() <= 25);
         // Finaly test if the username is correct the label doesn't appear //
         doubleClickOn("#textFieldUsername").push(KeyCode.DELETE);
-        write("test");
+        write("test1");
         clickOn("#passwordField");
         assertEquals("", labelInvalidUser.getText());
     }
@@ -163,7 +166,7 @@ public class SignInVControllerTest extends ApplicationTest {
         assertTrue(textFieldPassword.getText().length() <= 25);
         // Test when the password is correct //
         doubleClickOn("#textFieldPassword").push(KeyCode.DELETE);
-        write("testtest");
+        write("testtest1");
         clickOn("#textFieldUsername");
         assertEquals("", labelInvalidPassword.getText());
     }
@@ -173,7 +176,14 @@ public class SignInVControllerTest extends ApplicationTest {
      */
     @Test
     public void test7_signInTest() {
+        paneSignIn = lookup("#SignIn").query();
         clickOn("#buttonSignIn");
-        verifyThat(window("My Window"), WindowMatchers.isShowing());
+        verifyThat("Incorrect username or password.", isVisible());
+        clickOn("#textFieldUsername");
+        eraseText(1);
+        clickOn("#textFieldPassword");
+        eraseText(1);
+        clickOn("#buttonSignIn");
+        assertThat(paneSignIn, isInvisible());
     }
 }
