@@ -150,7 +150,7 @@ public class SignUpVController{
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
         ButtonShowHide.setOnAction(this::showHide);
-        ButtonShowHideConfirm.setOnAction(this::showHide);
+        ButtonShowHideConfirm.setOnAction(this::showHideConfirm);
         //
         //Show primary window
         stage.show();
