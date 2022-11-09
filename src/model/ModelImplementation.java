@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,8 +27,9 @@ import java.util.logging.Logger;
  * @author Julen
  */
 public class ModelImplementation implements Model {
-    private static final int PORT = 5000;
-    private static final String HOST = "localhost";
+    private final ResourceBundle bundle = ResourceBundle.getBundle("resources.config");
+    private final int PORT = Integer.parseInt(bundle.getString("PORT"));
+    private final String HOST = bundle.getString("HOST");
     private Socket sckt;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
