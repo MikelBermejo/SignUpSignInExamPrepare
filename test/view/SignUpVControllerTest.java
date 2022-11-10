@@ -86,6 +86,7 @@ public class SignUpVControllerTest extends ApplicationTest {
         labelInvalidName = lookup("#labelInvalidName").query();
         labelInvalidPassword = lookup("#labelInvalidPassword").query();
         clickOn("#buttonSignUp");
+        push(KeyCode.ENTER);
         assertEquals("Username can't be empty nor contain an empty space.", labelInvalidUser.getText());
         assertEquals("Invalid format of email (*@*.*)", labelInvalidEmail.getText());
         assertEquals("Name is empty", labelInvalidName.getText());
