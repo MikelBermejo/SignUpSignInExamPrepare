@@ -53,7 +53,7 @@ public class ApplicationVController {
             // La ventana no es redimensionable
             stage.setResizable(false);
             // La ventana recogerá un objeto User del cual cogerá el Username y lo asignará al labelMessage (“Hello [usuario]!!”)
-            labelMessage.setText("Hello " + user.getLogin() + "!!");
+            labelMessage.setText("Hello " + user.getFullName() + "!!");
 
             // Confirmar el cierre de la aplicación
             stage.setOnCloseRequest(this::handleExitAction);

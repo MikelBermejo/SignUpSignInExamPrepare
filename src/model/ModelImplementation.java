@@ -42,11 +42,12 @@ public class ModelImplementation implements Model {
 
     @Override
     public User doSignIn(User user) throws InvalidUserException, MaxConnectionExceededException, ConnectionErrorException, TimeOutException {
+        Package pack;
         try {
             sckt = new Socket(HOST,PORT);
             oos = new ObjectOutputStream(sckt.getOutputStream());
             
-            Package pack = new Package(user,MessageEnum.RE_SIGNIN);
+            pack = new Package(user,MessageEnum.RE_SIGNIN);
             oos.writeObject(pack);
             
             ois = new ObjectInputStream(sckt.getInputStream());
@@ -77,7 +78,7 @@ public class ModelImplementation implements Model {
                 Logger.getLogger(ModelImplementation.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return user;
+        return pack.getUser();
     }
     /**
      * Method that takes a user from the view and sends a package to the server
