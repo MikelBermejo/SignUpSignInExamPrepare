@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import datatransferobject.MessageEnum;
@@ -42,7 +37,7 @@ public class ModelImplementationTest extends TestCase {
     }
 
     /**
-     * Test of doSignIn method, of class ModelImplementation.
+     * Test of doSignIn method, of class ModelImplementation, it tries a signIn with correct values.
      */
     @Test
     public void testDoSignIn() {
@@ -64,18 +59,16 @@ public class ModelImplementationTest extends TestCase {
         assertEquals(user, result);
     }
     /**
-     * Test of doSignIn method, of class ModelImplementation.
+     * Test of doSignIn method, of class ModelImplementation, it trys signIn with a non-registered user.
      */
     @Test(expected=InvalidUserException.class)
-    public void testDoSignInPasswordLessThan8() {
+    public void testDoSignInError() throws InvalidUserException {
         System.out.println("doSignIn");
         User user = new User("aaaaaa", "aaaa@aaaaa.aaa", "aaa aaaa", UserStatus.ENABLED, UserPrivilege.USER, "aaaaaa", new Timestamp(System.currentTimeMillis()));
         ModelImplementation instance = new ModelImplementation();
         User result=null;
         try {
             result = instance.doSignIn(user);
-        } catch (InvalidUserException ex) {
-            Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MaxConnectionExceededException ex) {
             Logger.getLogger(ModelImplementationTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionErrorException ex) {
@@ -87,7 +80,7 @@ public class ModelImplementationTest extends TestCase {
     }
 
     /**
-     * Test of doSignUp method, of class ModelImplementation.
+     * Test of doSignUp method, of class ModelImplementation, it tries to do a signUp with correct values.
      */
     @Test
     public void testDoSignUp() {
