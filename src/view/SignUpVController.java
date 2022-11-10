@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
@@ -55,6 +57,8 @@ import model.ModelFactory;
 public class SignUpVController{
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("SignUpVController.class");
+    
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     
     @FXML
     private TextField textFieldUsername;
@@ -228,20 +232,27 @@ public class SignUpVController{
      * @param newValue 
      */
     private void focusedPropertyChangedEmail(Observable value, Boolean oldValue, Boolean newValue) {
-        if(oldValue){  
-            if(!textFieldEmail.isFocused()){   
-                try{
-                    if(!textFieldEmail.getText().matches("^[A-Za-z0-9+_.-]+@(.+)[A-Za-z0-9+_.-]")) throw new InvalidEmailValueException("Invalid format of email (*@*.*)"); 
+        if (!textFieldEmail.isFocused()) {
+            boolean matchOrNot = false;
+            Pattern pattern = Pattern.compile(emailPattern);
+            Matcher matcher = pattern.matcher(textFieldEmail.getText());
+            if (matcher.find()) {
+                matchOrNot = true;
+            }
+            try {
+                if (!matchOrNot) {
+                    throw new InvalidEmailValueException("Invalid format of email (*@*.*)");
+                } else {
                     imageViewEmail.setImage(new Image(getClass().getResourceAsStream("/resources/iconEmail.png")));
                     lineEmail.setStroke(Color.GREY);
                     labelInvalidEmail.setText("");
-                } catch (InvalidEmailValueException e) {
-                    imageViewEmail.setImage(new Image(getClass().getResourceAsStream("/resources/iconEmailIncorrect.png")));
-                    lineEmail.setStroke(Color.RED);
-                    labelInvalidEmail.setText(e.getMessage());
                 }
-                
+            } catch (InvalidEmailValueException e) {
+                imageViewEmail.setImage(new Image(getClass().getResourceAsStream("/resources/iconEmailIncorrect.png")));
+                lineEmail.setStroke(Color.RED);
+                labelInvalidEmail.setText(e.getMessage());
             }
+
         }
     }
     
