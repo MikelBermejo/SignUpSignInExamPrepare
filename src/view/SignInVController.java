@@ -41,7 +41,7 @@ import javafx.stage.WindowEvent;
 import model.ModelFactory;
 
 /**
- *
+ * Stage to logIn to the application.
  * @author Sendoa
  */
 public class SignInVController {
@@ -82,7 +82,10 @@ public class SignInVController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    /**
+     * Metodo que inicializa la ventana. 
+     * @param root 
+     */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
 

@@ -8,7 +8,7 @@ package model;
 import datatransferobject.Model;
 
 /**
- *
+ * Factoria de la clase model.
  * @author haize
  */
 public class ModelFactory {

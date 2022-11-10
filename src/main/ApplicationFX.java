@@ -16,7 +16,11 @@ import view.SignInVController;
  * @author 2dam
  */
 public class ApplicationFX extends Application {
-    
+    /**
+     * Este metodo inicializa la aplicacion abriendo la ventana (SinInView.fxml)
+     * @param stage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInView.fxml"));
