@@ -27,13 +27,18 @@ import static org.junit.Assert.*;
 public class ApplicationVControllerTest extends ApplicationTest {
     
     Pane paneSignIn;
-    
+    /**
+     * Un set up para poder realizar el testeo.
+     * @throws TimeoutException 
+     */
     @BeforeClass
     public static void setUpClass() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(ApplicationFXMessageVTest.class);
     }
-    
+    /**
+     * Testeo del logOut
+     */
     @Test
     public void test1_LogOutTest() {
         clickOn("#buttonLogOut");

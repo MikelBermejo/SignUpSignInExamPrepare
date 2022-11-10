@@ -18,7 +18,7 @@ import org.junit.Test;
 
 /**
  *
- * @author User
+ * @author Mikel
  */
 public class ModelImplementationTest extends TestCase {
     

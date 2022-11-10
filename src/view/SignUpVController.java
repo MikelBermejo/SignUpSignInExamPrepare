@@ -222,12 +222,9 @@ public class SignUpVController{
     }
     
     /**
-     * Comprueba si el email esta bajo foco y valida si es correcto.
-     * Si el campo no está vacío comprobar que el formato del correo introducido es válido.
-     *      En caso de que no lo sea salta la excepción invalidEmailValueException y cambiar el color de imageEmail y lineEmail a rojo. Cambiar el texto de labelInvalidEmail al mensaje de la excepción.
-     *      En caso de que sí lo sea o esté vacío cambiar el color de imageEmail a verde y emailLine a gris. Hacer invisible labelInvalidEmail.
+     * Comprueba si el email esta bajo foco y verifica si es valido o no, usando un patron miraremos si corresponde a la estructura correcto.
      * @param value
-     * @param oldValue
+     * @param oldValue 
      * @param newValue 
      */
     private void focusedPropertyChangedEmail(Observable value, Boolean oldValue, Boolean newValue) {
@@ -249,10 +246,7 @@ public class SignUpVController{
     }
     
     /**
-     * Comprueba si el nombre de ususario esta bajo foco y valida si es correcto.
-     *   Si el campo no está vacío comprobar que el nombre de usuario no tiene espacios.
-     *      En caso de que los tenga salta la excepción invalidUserValueException y cambiar el color de imageUser y lineUser a rojo. Cambiar el texto de labelInvalidUser al mensaje de la excepción.
-     *      En caso de que no los tenga o esté vacío cambiar el color de imageUser a verde y lineUser a gris. Hacer invisible labelInvalidUser.
+     * Comprueba si el nombre de ususario esta bajo foco y valida si es correcto, que no contenga espacios en blanco y que no sea vacio.
      * @param value
      * @param oldValue
      * @param newValue 
@@ -275,7 +269,7 @@ public class SignUpVController{
     }
     
     /**
-     * Comprueba si el confirmacion de la contraseña esta bajo foco y valida si es correcto.
+     * Comprueba si el confirmacion de la contraseña esta bajo foco y valida si es correcto, que sea igual que la contraseña.
      * @param value
      * @param oldValue
      * @param newValue 
@@ -298,7 +292,7 @@ public class SignUpVController{
     }
     
      /**
-      * Comprueba si la contraseña esta bajo foco y valida si es correcto.
+      * Comprueba si la contraseña esta bajo foco y valida si es correcto, si su longitud es superior o igual a 8 y que no contenga espacios.
       * @param value
       * @param oldValue
       * @param newValue 

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 /**
  * The implementation of the model
- * @author Julen
+ * @author Julen y Mikel
  */
 public class ModelImplementation implements Model {
     private final ResourceBundle bundle = ResourceBundle.getBundle("resources.config");

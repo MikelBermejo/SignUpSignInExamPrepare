@@ -13,7 +13,7 @@ import view.SignInVController;
 
 /**
  *
- * @author 2dam
+ * @author Sendoa
  */
 public class ApplicationFX extends Application {
     /**
