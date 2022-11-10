@@ -49,7 +49,7 @@ import javafx.stage.WindowEvent;
 import model.ModelFactory;
 
 /**
- *
+ * Escenario de registro
  * @author Mikel
  */
 public class SignUpVController{
@@ -120,7 +120,10 @@ public class SignUpVController{
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    /**
+     * Este metodo te inicializa el escenario de registro. Además les implementa acciones a los diferentes campos que contiene.
+     * @param root 
+     */
     public void initStage(Parent root) {
         //Create a scene associted to the node graph root.
         Scene scene = new Scene(root);
@@ -168,28 +171,39 @@ public class SignUpVController{
         // Si los datos se validan correctamente, se ejecuta el método doSignUp() enviándole un user con los datos introducidos, y devuelve una excepción en caso de error o una respuesta OK si todo va bien.
         // Si no devuelve ninguna excepción abre la ventana SignIn y cierra la actual.
         // Si devuelve una excepción se muestra una ventana emergente que muestra el error.
-
+    /**
+     * Evento que permite controlar que el maximo de carteres del textfield sea 25.
+     * @param event 
+     */
     private void textChanged(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 25) {
             event.consume();
             ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 25));
         }
     }
-    
+    /**
+     * Evento que permite controlar que el maximo de carteres del email sea 35
+     * @param event 
+     */
     private void textChangedEmail(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 35) {
             event.consume();
             ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 35));
         }
     }
-    
+    /**
+     * Evento que permite controlar que el maximo de carteres del nombre sea 50
+     * @param event 
+     */
     private void textChangedName(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 50) {
             event.consume();
             ((TextField) event.getSource()).setText(((TextField) event.getSource()).getText().substring(0, 50));
         }
     }
-    
+    /**
+     * Este metodo comprueba si el nombre está vacio o no.
+     */
     private void nameIsEmptyOrNo() {
         if(!textFieldName.isFocused()){
             try{
@@ -207,7 +221,12 @@ public class SignUpVController{
         }
     }
     
-    
+    /**
+     * Comprueba si el email esta bajo foco y verifica si es valido o no, usando un patron miraremos si corresponde a la estructura correcto.
+     * @param value
+     * @param oldValue 
+     * @param newValue 
+     */
     private void focusedPropertyChangedEmail(Observable value, Boolean oldValue, Boolean newValue) {
         if(oldValue){  
             if(!textFieldEmail.isFocused()){   
@@ -225,6 +244,13 @@ public class SignUpVController{
             }
         }
     }
+    
+    /**
+     * Comprueba si el nombre de ususario esta bajo foco y valida si es correcto, que no contenga espacios en blanco y que no sea vacio.
+     * @param value
+     * @param oldValue
+     * @param newValue 
+     */
     private void focusedPropertyChanged(Observable value, Boolean oldValue, Boolean newValue) {
         if(oldValue){
             if(!textFieldUsername.isFocused()){
@@ -242,6 +268,12 @@ public class SignUpVController{
         }
     }
     
+    /**
+     * Comprueba si el confirmacion de la contraseña esta bajo foco y valida si es correcto, que sea igual que la contraseña.
+     * @param value
+     * @param oldValue
+     * @param newValue 
+     */
      private void focusedPropertyChangedPasswordConfirm(Observable value, Boolean oldValue, Boolean newValue){
         if(oldValue){
             if(!passwordFieldConfirm.isFocused() && !textFieldConfirmPassword.isFocused()){
@@ -259,6 +291,12 @@ public class SignUpVController{
         }
     }
     
+     /**
+      * Comprueba si la contraseña esta bajo foco y valida si es correcto, si su longitud es superior o igual a 8 y que no contenga espacios.
+      * @param value
+      * @param oldValue
+      * @param newValue 
+      */
     private void focusedPropertyChangedPassword(Observable value, Boolean oldValue, Boolean newValue){
         if(oldValue){
             if(!passwordField.isFocused() && !textFieldPassword.isFocused()){
@@ -275,7 +313,11 @@ public class SignUpVController{
             }
         }
     }
-
+    
+    /**
+     * El metodo que loguea y abre la ventana signIn.
+     * @param event 
+     */
     private void signIn(ActionEvent event) {
         try {
             stage.close();
@@ -291,6 +333,10 @@ public class SignUpVController{
         }
     }
     
+    /**
+     * El metodo de registro.
+     * @param event 
+     */
     @FXML
     private void signUp(ActionEvent event) {
         nameIsEmptyOrNo();
@@ -305,7 +351,10 @@ public class SignUpVController{
             LOGGER.info(ex.getMessage());
         }
     }
-
+    /**
+     * Metodo que hace visible y no visible la contraseña
+     * @param event 
+     */
     private void showHide(ActionEvent event) {
         if (ButtonShowHide.isSelected()) {
             IconEye.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
@@ -318,6 +367,10 @@ public class SignUpVController{
         }
     }
     
+    /**
+     * Metodo que hace visible y no visible la confirmacion de contraseña.
+     * @param event 
+     */
     private void showHideConfirm(ActionEvent event) {
       if (ButtonShowHideConfirm.isSelected()) {
             IconEye2.setImage(new Image(getClass().getResourceAsStream("/resources/iconEye2.png")));
@@ -329,7 +382,11 @@ public class SignUpVController{
             textFieldConfirmPassword.setVisible(false);
         }
     }
-
+    
+    /**
+     * 
+     * @param KEY_RELEASED 
+     */
     private void textChangedPressed(KeyEvent KEY_RELEASED) {
         if (passwordField.isVisible()){
             textFieldPassword.setText(passwordField.getText());
@@ -343,6 +400,10 @@ public class SignUpVController{
         }
     } 
 
+    /**
+     * Metodo que te hace salir de la aplicacion pasando por un alert
+     * @param event 
+     */
     private void handleExitAction(WindowEvent event) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
         a.showAndWait();

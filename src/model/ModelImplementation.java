@@ -23,8 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Julen
+ * The implementation of the model
+ * @author Julen y Mikel
  */
 public class ModelImplementation implements Model {
     private final ResourceBundle bundle = ResourceBundle.getBundle("resources.config");
