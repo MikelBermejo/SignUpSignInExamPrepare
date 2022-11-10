@@ -148,7 +148,6 @@ public class SignUpVController{
         textFieldUsername.focusedProperty().addListener(this::focusedPropertyChanged);
         textFieldConfirmPassword.focusedProperty().addListener(this::focusedPropertyChangedPasswordConfirm);
         passwordFieldConfirm.focusedProperty().addListener(this::focusedPropertyChangedPasswordConfirm);
-        
         //
         //Button Actions
         buttonSignIn.setOnAction(this::signIn);
@@ -267,7 +266,7 @@ public class SignUpVController{
                     if(passwordField.getText().contains(" ") || passwordField.getText().length()<8 || passwordField.getText().isEmpty()) throw new InvalidPasswordValueException("Password can't be empty nor contain an empty space or his lenght is less than 8.");
                     imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPassword.png")));
                     linePassword.setStroke(Color.GREY);
-                    labelInvalidUser.setText("");
+                    labelInvalidPassword.setText("");
                 } catch(InvalidPasswordValueException e) {
                     imageViewPassword.setImage(new Image(getClass().getResourceAsStream("/resources/iconPasswordRedIncorrect.png")));
                     linePassword.setStroke(Color.RED);
