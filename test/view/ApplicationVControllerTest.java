@@ -28,7 +28,7 @@ public class ApplicationVControllerTest extends ApplicationTest {
     
     Pane paneSignIn;
     /**
-     * Un set up para poder realizar el testeo.
+     * A set up for testing.
      * @throws TimeoutException 
      */
     @BeforeClass
@@ -37,7 +37,7 @@ public class ApplicationVControllerTest extends ApplicationTest {
         FxToolkit.setupApplication(ApplicationFXMessageVTest.class);
     }
     /**
-     * Testeo del logOut
+     * Test to check wether the logout button works or not 
      */
     @Test
     public void test1_LogOutTest() {
