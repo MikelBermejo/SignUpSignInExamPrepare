@@ -12,13 +12,13 @@ import javafx.stage.Stage;
 import view.SignInVController;
 
 /**
- *
+ * Application main of the client side.
  * @author Sendoa
  */
 public class ApplicationFX extends Application {
     /**
-     * Este metodo inicializa la aplicacion abriendo la ventana (SinInView.fxml)
-     * @param stage
+     * This method initialises the application by opening the window (SinInView.fxml).
+     * @param stage stage initialising
      * @throws Exception 
      */
     @Override

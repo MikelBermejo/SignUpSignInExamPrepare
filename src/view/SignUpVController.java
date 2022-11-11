@@ -125,8 +125,8 @@ public class SignUpVController{
         this.stage = stage;
     }
     /**
-     * Este metodo te inicializa el escenario de registro. Además les implementa acciones a los diferentes campos que contiene.
-     * @param root 
+     * This method initialises the registration scenario. It also implements actions to the different fields it contains.
+     * @param root path of the window
      */
     public void initStage(Parent root) {
         //Create a scene associted to the node graph root.
@@ -176,8 +176,8 @@ public class SignUpVController{
         // Si no devuelve ninguna excepción abre la ventana SignIn y cierra la actual.
         // Si devuelve una excepción se muestra una ventana emergente que muestra el error.
     /**
-     * Evento que permite controlar que el maximo de carteres del textfield sea 25.
-     * @param event 
+     * Event that allows to control that the maximum number of carters in the textfield is 25.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void textChanged(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 25) {
@@ -186,7 +186,7 @@ public class SignUpVController{
         }
     }
     /**
-     * Evento que permite controlar que el maximo de carteres del email sea 35
+     * Event that allows to control that the maximum number of email addresses is 35.
      * @param event 
      */
     private void textChangedEmail(KeyEvent event) {
@@ -196,8 +196,8 @@ public class SignUpVController{
         }
     }
     /**
-     * Evento que permite controlar que el maximo de carteres del nombre sea 50
-     * @param event 
+     * Event that allows to control that the maximum number of characters in the name is 50.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void textChangedName(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 50) {
@@ -206,7 +206,7 @@ public class SignUpVController{
         }
     }
     /**
-     * Este metodo comprueba si el nombre está vacio o no.
+     * This method checks whether the name is empty or not.
      */
     private void nameIsEmptyOrNo() {
         if(!textFieldName.isFocused()){
@@ -226,10 +226,10 @@ public class SignUpVController{
     }
     
     /**
-     * Comprueba si el email esta bajo foco y verifica si es valido o no, usando un patron miraremos si corresponde a la estructura correcto.
-     * @param value
-     * @param oldValue 
-     * @param newValue 
+     * Check if the email is under focus and verify if it is valid or not, using a pattern we will see if it corresponds to the correct structure.
+     * @param value Actual value
+     * @param oldValue Old value
+     * @param newValue New value
      */
     private void focusedPropertyChangedEmail(Observable value, Boolean oldValue, Boolean newValue) {
         if (!textFieldEmail.isFocused()) {
@@ -257,10 +257,10 @@ public class SignUpVController{
     }
     
     /**
-     * Comprueba si el nombre de ususario esta bajo foco y valida si es correcto, que no contenga espacios en blanco y que no sea vacio.
-     * @param value
-     * @param oldValue
-     * @param newValue 
+     * Check if the username is in focus and validate if it is correct, does not contain blanks and is not empty.
+     * @param value Actual value
+     * @param oldValue Old value
+     * @param newValue New value
      */
     private void focusedPropertyChanged(Observable value, Boolean oldValue, Boolean newValue) {
         if(oldValue){
@@ -280,10 +280,10 @@ public class SignUpVController{
     }
     
     /**
-     * Comprueba si el confirmacion de la contraseña esta bajo foco y valida si es correcto, que sea igual que la contraseña.
-     * @param value
-     * @param oldValue
-     * @param newValue 
+     * Check if the password confirmation is under focus and validate if it is correct, that it is the same as the password.
+     * @param value Actual value
+     * @param oldValue Old value
+     * @param newValue New value
      */
      private void focusedPropertyChangedPasswordConfirm(Observable value, Boolean oldValue, Boolean newValue){
         if(oldValue){
@@ -303,10 +303,10 @@ public class SignUpVController{
     }
     
      /**
-      * Comprueba si la contraseña esta bajo foco y valida si es correcto, si su longitud es superior o igual a 8 y que no contenga espacios.
-      * @param value
-      * @param oldValue
-      * @param newValue 
+      * Check if the password is under focus and validate if it is correct, if its length is greater than or equal to 8 and that it does not contain spaces.
+      * @param value Actual value
+      * @param oldValue Old value
+      * @param newValue New value
       */
     private void focusedPropertyChangedPassword(Observable value, Boolean oldValue, Boolean newValue){
         if(oldValue){
@@ -326,8 +326,8 @@ public class SignUpVController{
     }
     
     /**
-     * El metodo que loguea y abre la ventana signIn.
-     * @param event 
+     * The method that logs in and opens the signIn window.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void signIn(ActionEvent event) {
         try {
@@ -345,8 +345,8 @@ public class SignUpVController{
     }
     
     /**
-     * El metodo de registro.
-     * @param event 
+     * The method of registration.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     @FXML
     private void signUp(ActionEvent event) {
@@ -363,8 +363,8 @@ public class SignUpVController{
         }
     }
     /**
-     * Metodo que hace visible y no visible la contraseña
-     * @param event 
+     * Method that makes the password visible and not visible
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void showHide(ActionEvent event) {
         if (ButtonShowHide.isSelected()) {
@@ -379,8 +379,8 @@ public class SignUpVController{
     }
     
     /**
-     * Metodo que hace visible y no visible la confirmacion de contraseña.
-     * @param event 
+     * Method that makes the password confirmation visible and not visible.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void showHideConfirm(ActionEvent event) {
       if (ButtonShowHideConfirm.isSelected()) {
@@ -395,7 +395,7 @@ public class SignUpVController{
     }
     
     /**
-     * 
+     * Method that makes the password visible and not visible.
      * @param KEY_RELEASED 
      */
     private void textChangedPressed(KeyEvent KEY_RELEASED) {
@@ -412,8 +412,8 @@ public class SignUpVController{
     } 
 
     /**
-     * Metodo que te hace salir de la aplicacion pasando por un alert
-     * @param event 
+     * Method that makes you exit the application by going through an alert.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void handleExitAction(WindowEvent event) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");

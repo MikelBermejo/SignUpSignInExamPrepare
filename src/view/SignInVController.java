@@ -83,8 +83,8 @@ public class SignInVController {
         this.stage = stage;
     }
     /**
-     * Metodo que inicializa la ventana. 
-     * @param root 
+     * Method that initialises the window. 
+     * @param root path of the window
      */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
@@ -143,11 +143,9 @@ public class SignInVController {
     }
     
     /**
-     * Comprueba que el texto introducido sea inferior a 25 caracteres. Si llega
-     * al máximo permitido no deja introducir más caracteres y sustrae y enseña
-     * los primeros 25
+     * It checks that the text entered is less than 25 characters. If it reaches the maximum allowed, it does not allow more characters to be entered and subtracts and displays the first 25 characters.
      *
-     * @param event un evento tipo KEY_TYPED para cuando se escribe un caracter
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void textChanged(KeyEvent event) {
         if (((TextField) event.getSource()).getText().length() >= 25) {
@@ -157,10 +155,8 @@ public class SignInVController {
     }
 
     /**
-     * Abre la ventana Sign Up y cierra la Sign in.
-     *
-     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
-     * pulsado
+     * Open the Sign Up window and close the Sign in window.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void handleSignUp(ActionEvent event) {
         try {
@@ -181,10 +177,9 @@ public class SignInVController {
     }
 
     /**
-     * Metodo para iniciar sesion
+     * Login method
      *
-     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
-     * pulsado
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     @FXML
     private void handleSignIn(ActionEvent event) {
@@ -222,10 +217,9 @@ public class SignInVController {
     }
 
     /**
-     * Comprueba en qué estado (presionado/no presionado) está la contraseña.
+     * Check what state (pressed/not pressed) the password is in.
      *
-     * @param event un evento tipo ActionEvent.ACTION para cuendo el boton es
-     * pulsado
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void handleShowHide(ActionEvent event) {
         if (buttonShowHide.isSelected()) {
@@ -242,10 +236,8 @@ public class SignInVController {
     }
 
     /**
-     * Copia el texto de un campo al otro
-     *
-     * @param event un evento tipo KEY_RELEASED el usuario deja de presionar la
-     * tecla en cuestion
+     * Copy text from one field to another
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void handleKeyReleased(KeyEvent event) {
         if (passwordField.isVisible()) {
@@ -258,11 +250,10 @@ public class SignInVController {
     }
 
     /**
-     * Comprueba el cambio de foco
-     *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * Check the change of focus
+     * @param observable Actual value
+     * @param oldValue Old value
+     * @param newValue New Value
      */
     private void focusedPropertyChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
