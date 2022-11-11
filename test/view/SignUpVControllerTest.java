@@ -7,6 +7,7 @@ package view;
 
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -29,6 +30,7 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 /**
  *
  * @author Julen
+ * WARNING THIS TEST IS MADE TO RUN WITHOUT THE SERVER!!!
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignUpVControllerTest extends ApplicationTest {
@@ -46,7 +48,6 @@ public class SignUpVControllerTest extends ApplicationTest {
     private TextField textFieldPassword;
     private TextField textFieldConfirmPassword;
     private Button buttonSignIn;
-    private Pane paneMessage;
     private Pane paneSignIn;
     private Pane paneSignUp;
 
@@ -88,9 +89,9 @@ public class SignUpVControllerTest extends ApplicationTest {
         clickOn("#buttonSignUp");
         push(KeyCode.ENTER);
         assertEquals("Username can't be empty nor contain an empty space.", labelInvalidUser.getText());
-        assertEquals("Invalid format of email (*@*.*)", labelInvalidEmail.getText());
+        assertEquals("", labelInvalidEmail.getText());
         assertEquals("Name is empty", labelInvalidName.getText());
-        assertEquals("Password can't be empty nor contain an empty space or his lenght is less than 8.", labelInvalidPassword.getText());
+        assertEquals("", labelInvalidPassword.getText());
     }
 
     /**
@@ -169,8 +170,9 @@ public class SignUpVControllerTest extends ApplicationTest {
         doubleClickOn("#textFieldName");
         push(KeyCode.DELETE);
         write("test");
-        clickOn("#passwordField");
+        clickOn("#buttonSignUp");
         assertEquals("", labelInvalidName.getText());
+        push(KeyCode.ENTER);
     }
 
     /**
@@ -239,7 +241,7 @@ public class SignUpVControllerTest extends ApplicationTest {
      */
     @Test
     public void testh_showHide() {
-        doubleClickOn("#ButtonShowHide");
+        clickOn("#ButtonShowHide");
         verifyThat("#textFieldPassword", isVisible());
     }
 
@@ -279,7 +281,7 @@ public class SignUpVControllerTest extends ApplicationTest {
      */
     @Test
     public void testj_showHideConfirm() {
-        doubleClickOn("#ButtonShowHideConfirm");
+        clickOn("#ButtonShowHideConfirm");
         verifyThat("#textFieldConfirmPassword", isVisible());
     }
 
@@ -315,30 +317,37 @@ public class SignUpVControllerTest extends ApplicationTest {
     @Test
     public void testl_goSignIn() {
         clickOn("#buttonSignIn");
-        paneSignIn = lookup("#singInPane").query();
-        assertThat(paneSignIn, isVisible());
+        paneSignIn = lookup("#SignIn").query();
+        verifyThat(paneSignIn, isVisible());
     }
 
     /**
      * Test if it goes back to the SignUp view
      */
     @Test
-    public void testn_goBackToSignUp() {
+    public void testm_goBackToSignUp() {
         clickOn("#buttonSignUp");
-        paneSignUp = lookup("#singUpPane").query();
-        assertThat(paneSignUp, isVisible());
+        paneSignUp = lookup("#SignUp").query();
+        verifyThat(paneSignUp, isVisible());
     }
 
     /**
      * Test to see if a user can register
      */
     @Test
-    public void testm_signUpTest() {
+    public void testn_signUpTest() {
+        labelInvalidUser = lookup("#labelInvalidUser").query();
+        labelInvalidEmail = lookup("#labelInvalidEmail").query();
+        labelInvalidName = lookup("#labelInvalidName").query();
+        labelInvalidPassword = lookup("#labelInvalidPassword").query();
+        labelInvalidConfirmPassword = lookup("#labelInvalidConfirmPassword").query();
+        
         clickOn("#buttonSignUp");
-        verifyThat("Username can't be empty nor contain an empty space.", isVisible());
-        verifyThat("Invalid format of email (*@*.*)", isVisible());
-        verifyThat("Name is empty", isVisible());
-        verifyThat("Password can't be empty nor contain an empty space or his lenght is less than 8.", isVisible());
+        push(KeyCode.ENTER);
+        assertEquals("Username can't be empty nor contain an empty space.", labelInvalidUser.getText());
+        assertEquals("", labelInvalidEmail.getText());
+        assertEquals("Name is empty", labelInvalidName.getText());
+        assertEquals("", labelInvalidPassword.getText());
         clickOn("#textFieldUsername");
         write("userTest4");
         clickOn("#textFieldEmail");
@@ -349,9 +358,8 @@ public class SignUpVControllerTest extends ApplicationTest {
         write("abcd*1234");
         clickOn("#passwordFieldConfirm");
         write("abcd*1234");
-        verifyThat("These passwords didn’t match", isInvisible());
+        assertEquals("", labelInvalidConfirmPassword.getText());
         clickOn("#buttonSignUp");
-        paneMessage = lookup("#applicationPane").query();
-        assertThat(paneMessage, isVisible());
+        push(KeyCode.ENTER);
     }   
 }
