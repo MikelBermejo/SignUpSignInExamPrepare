@@ -23,7 +23,7 @@ import view.SignUpVController;
  */
 public class ApplicationFXMessageVTest extends Application {
     /**
-     * Metodo que inicializa la venta a testear para testear applicantionV
+     * Method that initialises the test window for testing applicantionV
      * @param stage
      * @throws Exception 
      */

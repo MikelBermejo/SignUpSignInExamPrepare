@@ -81,17 +81,17 @@ public class SignInVControllerTest extends ApplicationTest {
     public void test3_UsernameIsInvalid() {
         textFieldUsername = lookup("#textFieldUsername").query();
         labelInvalidUser = lookup("#labelInvalidUser").query();
-        // First test if the label appears when there is a space in the textField //
+        // First test if the label appears when there is a space in the textField 
         clickOn("#textFieldUsername");
         write("test test");
         clickOn("#passwordField");
         assertEquals("Username can't contain an empty space", labelInvalidUser.getText());
-        // Then test if the text field can contain more than 25 characters //
+        // Then test if the text field can contain more than 25 characters 
         clickOn("#textFieldUsername");
         eraseText(9);
         write("123456789012345678901234567890");
         assertTrue(textFieldUsername.getText().length() <= 25);
-        // Finaly test if the username is correct the label doesn't appear //
+        // Finaly test if the username is correct the label doesn't appear 
         doubleClickOn("#textFieldUsername").push(KeyCode.DELETE);
         write("test1");
         clickOn("#passwordField");
@@ -105,23 +105,23 @@ public class SignInVControllerTest extends ApplicationTest {
     public void test4_passwordFieldIsInvalid() {
         passwordField = lookup("#passwordField").query();
         labelInvalidPassword = lookup("#labelInvalidPassword").query();
-        // First test if the password is more than 8 characters long //
+        // First test if the password is more than 8 characters long 
         clickOn("#passwordField");
         write("test");
         clickOn("#textFieldUsername");
         assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
-        // Now we test when it is more than 8 characters long but contins spaces //
+        // Now we test when it is more than 8 characters long but contins spaces 
         clickOn("#passwordField");
         eraseText(4);
         write("test test");
         clickOn("#textFieldUsername");
         assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
-        // Test if it can contain more than 25 characters //
+        // Test if it can contain more than 25 characters 
         clickOn("#passwordField");
         eraseText(9);
         write("123456789012345678901234567890");
         assertTrue(passwordField.getText().length() <= 25);
-        // Test when the password is correct //
+        // Test when the password is correct 
         doubleClickOn("#passwordField").push(KeyCode.DELETE);
         write("testtest");
         clickOn("#textFieldUsername");
@@ -146,24 +146,24 @@ public class SignInVControllerTest extends ApplicationTest {
     public void test6_textFieldPasswordIsInvalid() {
         textFieldPassword = lookup("#textFieldPassword").query();
         labelInvalidPassword = lookup("#labelInvalidPassword").query();
-        // First test if the password is more than 8 characters long //
+        // First test if the password is more than 8 characters long 
         clickOn("#textFieldPassword");
         eraseText(8);
         write("test");
         clickOn("#textFieldUsername");
         assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
-        // Now we test when it is more than 8 characters long but contins spaces //
+        // Now we test when it is more than 8 characters long but contins spaces 
         clickOn("#textFieldPassword");
         eraseText(4);
         write("test test");
         clickOn("#textFieldUsername");
         assertEquals("Password must be at least 8 characters long and must not contain blank spaces", labelInvalidPassword.getText());
-        // Test if it can contain more than 25 characters //
+        // Test if it can contain more than 25 characters 
         clickOn("#textFieldPassword");
         eraseText(9);
         write("123456789012345678901234567890");
         assertTrue(textFieldPassword.getText().length() <= 25);
-        // Test when the password is correct //
+        // Test when the password is correct 
         doubleClickOn("#textFieldPassword").push(KeyCode.DELETE);
         write("testtest1");
         clickOn("#textFieldUsername");
@@ -176,6 +176,7 @@ public class SignInVControllerTest extends ApplicationTest {
     @Test
     public void test7_signInTest() {
         clickOn("#buttonSignIn");
+        // Test if the alert appears 
         verifyThat("Incorrect username or password.", isVisible());
         push(KeyCode.ENTER);
         clickOn("#textFieldUsername");
@@ -183,6 +184,7 @@ public class SignInVControllerTest extends ApplicationTest {
         clickOn("#textFieldPassword");
         eraseText(1);
         clickOn("#buttonSignIn");
+        // Thest if it can see the main windows pane 
         paneMessage = lookup("#applicationPane").query();
         assertThat(paneMessage, isVisible());
     }
