@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * Controlador del escenario de la aplicación
+ * Application stage controller
  * @author Haizea and Julen
  */
 public class ApplicationVController {
@@ -42,8 +42,8 @@ public class ApplicationVController {
     @FXML
     private Label labelMessage;
     /**
-     * Este metodo inicializa el escenario mostrando un mensaje de saludo dirigido al usuario que ha introducido sus datos.
-     * @param root 
+     * This method initialize the stage of the application showing a greeting to the user who accessed to this.
+     * @param root path of the window
      */
     public void initStage(Parent root) {
         try {
@@ -72,8 +72,8 @@ public class ApplicationVController {
         }
     }
     /**
-     * Este metodo cierra la aplicación atraves de un alert.
-     * @param event 
+     * This method close the application using an alert
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     private void handleExitAction(WindowEvent event) {
         Alert a = new Alert(AlertType.CONFIRMATION, "Are you sure you want to exit? This will close the app.");
@@ -92,8 +92,8 @@ public class ApplicationVController {
         }
     }
     /**
-     * Este metodo cierra de esccenario y te manda al SignIn a traves de un alert clicando un boton "LogOut".
-     * @param event 
+     * This method closes the scenario and sends you to the SignIn via an alert by clicking a "LogOut" button.
+     * @param event an ActionEvent.ACTION event type for when the button is pressed
      */
     @FXML
     private void handleButtonLogOutAction(ActionEvent event) {
