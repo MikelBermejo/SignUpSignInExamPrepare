@@ -330,26 +330,14 @@ public class SignUpVControllerTest extends ApplicationTest {
         paneSignUp = lookup("#SignUp").query();
         verifyThat(paneSignUp, isVisible());
     }
-
+    
     /**
-     * Test to see if a user can register
+     * Test to see if a user can not register due to username existance.
      */
     @Test
-    public void testn_signUpTest() {
-        labelInvalidUser = lookup("#labelInvalidUser").query();
-        labelInvalidEmail = lookup("#labelInvalidEmail").query();
-        labelInvalidName = lookup("#labelInvalidName").query();
-        labelInvalidPassword = lookup("#labelInvalidPassword").query();
-        labelInvalidConfirmPassword = lookup("#labelInvalidConfirmPassword").query();
-        
-        clickOn("#buttonSignUp");
-        push(KeyCode.ENTER);
-        assertEquals("Username can't be empty nor contain an empty space.", labelInvalidUser.getText());
-        assertEquals("", labelInvalidEmail.getText());
-        assertEquals("Name is empty", labelInvalidName.getText());
-        assertEquals("", labelInvalidPassword.getText());
+    public void testn_signUpUserExistExceptionTestUsername() {
         clickOn("#textFieldUsername");
-        write("userTest4");
+        write("userTest");
         clickOn("#textFieldEmail");
         write("userTest4@gmail.com");
         clickOn("#textFieldName");
@@ -357,9 +345,53 @@ public class SignUpVControllerTest extends ApplicationTest {
         clickOn("#passwordField");
         write("abcd*1234");
         clickOn("#passwordFieldConfirm");
-        write("abcd*1234");
-        assertEquals("", labelInvalidConfirmPassword.getText());
+        write("abcd*1234"); 
         clickOn("#buttonSignUp");
+        verifyThat("This user already exist.", isVisible());
         push(KeyCode.ENTER);
-    }   
+    } 
+    
+    /**
+     * Test to see if a user can not register due to user email existance.
+     */
+    @Test
+    public void testo_signUpUserExistExceptionTestEmail() {
+        doubleClickOn("#textFieldUsername");
+        write("userTest5");
+        clickOn("#textFieldEmail");
+        doubleClickOn("#textFieldEmail");
+        write("userTest2@gmail.com");
+        doubleClickOn("#textFieldName");
+        write("userTest5");
+        doubleClickOn("#passwordField");
+        write("abcd*1234");
+        doubleClickOn("#passwordFieldConfirm");
+        write("abcd*1234"); 
+        doubleClickOn("#buttonSignUp");
+        verifyThat("This user already exist.", isVisible());
+        push(KeyCode.ENTER);
+    } 
+
+    /**
+     * Test to see if a user can register.
+     */
+    @Test
+    public void testp_signUpTest() {
+        doubleClickOn("#textFieldUsername");
+        write("userTest4");
+        clickOn("#textFieldEmail");
+        doubleClickOn("#textFieldEmail");
+        write("userTest4@gmail.com");
+        doubleClickOn("#textFieldName");
+        write("userTest4");
+        doubleClickOn("#passwordField");
+        write("abcd*1234");
+        doubleClickOn("#passwordFieldConfirm");
+        write("abcd*1234"); 
+        clickOn("#buttonSignUp");
+        paneSignIn = lookup("#SignIn").query();
+        assertThat(paneSignIn, isVisible());
+    }
+    
+     
 }
