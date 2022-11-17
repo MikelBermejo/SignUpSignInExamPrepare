@@ -39,6 +39,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.WindowEvent;
 import model.ModelFactory;
+import model.DAOFactory;
 
 /**
  * Stage to logIn to the application.
@@ -189,7 +190,7 @@ public class SignInVController {
         // Si los datos se validan correctamente, se ejecuta el método doSignIn().
         focusedPropertyChanged(null, true, false);
         if (labelInvalidPassword.getText().equalsIgnoreCase("") && labelInvalidUser.getText().equalsIgnoreCase("")) {
-            Model model = ModelFactory.getModel();
+            Model model = DAOFactory.getModel();
             User user = new User();
             user.setLogin(textFieldUsername.getText());
             user.setPassword(textFieldPassword.getText());

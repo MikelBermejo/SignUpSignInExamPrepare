@@ -49,6 +49,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.WindowEvent;
 import model.ModelFactory;
+import model.DAOFactory;
 
 /**
  * Escenario de registro
@@ -351,7 +352,7 @@ public class SignUpVController{
     @FXML
     private void signUp(ActionEvent event) {
         nameIsEmptyOrNo();
-        Model model = ModelFactory.getModel();
+        Model model = DAOFactory.getModel();
         User user = new User(textFieldUsername.getText(), textFieldEmail.getText(),textFieldName.getText(),UserStatus.ENABLED,UserPrivilege.USER,textFieldPassword.getText(),new Timestamp(System.currentTimeMillis()));
         try {
             model.doSignUp(user);
